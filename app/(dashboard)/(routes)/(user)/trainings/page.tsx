@@ -1,7 +1,14 @@
-const TrainingsPage = () => {
-  return (
-    <div>TrainingsPage</div>
-  )
-}
+import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
-export default TrainingsPage
+const TrainingsPage = () => {
+  const { userId } = auth();
+
+  if (!userId) {
+    redirect("/");
+  }
+
+  return <div>TrainingsPage</div>;
+};
+
+export default TrainingsPage;

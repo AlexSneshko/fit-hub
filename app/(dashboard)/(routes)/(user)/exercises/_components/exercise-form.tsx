@@ -146,7 +146,7 @@ export const ExerciseForm = ({
       toast.error("Something went wrong");
       router.push("/exercises");
     }
-  }, []);
+  }, [router]);
 
   return (
     <Form {...form}>

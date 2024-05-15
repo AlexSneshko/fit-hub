@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { ImageIcon, Pencil, Plus } from "lucide-react";
-import { UserButton, auth } from "@clerk/nextjs";
+import { ImageIcon, Pencil, Plus, User } from "lucide-react";
+import { SignIn, UserButton, auth } from "@clerk/nextjs";
 import { ProfileType } from "@prisma/client";
 import { notFound, redirect } from "next/navigation";
 
@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PostList } from "@/app/(dashboard)/_components/post/post-list";
 import { db } from "@/lib/db";
 import Image from "next/image";
+import { UserAvatar } from "@/app/(dashboard)/_components/user/user-avatar";
 
 export default async function Home({
   params,
@@ -26,6 +27,10 @@ export default async function Home({
       subscribers: true,
     },
   });
+
+  if (!user && !userId) {
+    redirect("/sign-in");
+  }
 
   if (!user) {
     notFound();
@@ -50,21 +55,7 @@ export default async function Home({
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="flex md:w-[800px]">
-        {!user.imageUrl ? (
-          <div className="flex items-center justify-center h-32 w-32 bg-slate-200 rounded-full">
-            <ImageIcon className="h-24 w-24 text-slate-500" />
-          </div>
-        ) : (
-          <div className="relative aspect-video mt-2">
-            <Image
-              alt="Upload"
-              width={96}
-              height={96}
-              className="rounded-full h-24 w-24"
-              src={user.imageUrl}
-            />
-          </div>
-        )}
+        <UserAvatar avatarUrl={user.imageUrl} imgSize={32} />
         <div className="flex flex-col justify-between ml-4">
           <div className="flex flex-col">
             <h1 className="text-xl font-bold">{user.username}</h1>

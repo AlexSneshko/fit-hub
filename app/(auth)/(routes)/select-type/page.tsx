@@ -11,7 +11,6 @@ const SelectTypePage = () => {
   const onUserTypeClick = async () => {
     try {
         const response = await axios.post('/api/users');
-        // router.push("/sign-in")
         toast.success("User profile created")
     } catch (error) {
         toast.error("Something went wrong");
@@ -36,12 +35,12 @@ const SelectTypePage = () => {
       </div>
       <div className="flex gap-x-10 mt-16">
         <AccountTypeInfo
-          //onClick={() => {}}
+          onClick={onUserTypeClick}
           label="User"
           description="Become part of our active fitness community, set your goals, and access tools to achieve success."
         />
         <AccountTypeInfo
-          //onClick={() => {}}
+          onClick={onUserTypeClick}
           label="Gym"
           description="Manage your fitness facility, attract more clients, and deliver high-quality services to your visitors."
         />

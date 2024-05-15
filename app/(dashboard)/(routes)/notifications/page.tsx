@@ -1,7 +1,14 @@
-const NotificationsPage = () => {
-  return (
-    <div>NotificationsPage</div>
-  )
-}
+import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
-export default NotificationsPage
+const NotificationsPage = () => {
+  const { userId } = auth();
+
+  if (!userId) {
+    redirect("/");
+  }
+
+  return <div>NotificationsPage</div>;
+};
+
+export default NotificationsPage;

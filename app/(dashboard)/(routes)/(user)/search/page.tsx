@@ -1,9 +1,10 @@
+import { db } from "@/lib/db";
 import { UserList } from "@/app/(dashboard)/_components/user/user-list"
 import { SearchInput } from "@/components/search-input"
-import { db } from "@/lib/db";
+
 
 const SearchPage = async () => {
-  const users = await db.user.findMany({});
+  const users = await db.user.findMany();
 
   return (
     <div>

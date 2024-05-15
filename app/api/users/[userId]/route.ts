@@ -17,9 +17,9 @@ export async function GET(req: Request, { params }: { params: { userId: string }
             }
         })
 
-        if (!user) {
-            return new NextResponse("User not found", { status: 404 })
-        }
+        // if (!user) {
+        //     return new NextResponse("User not found", { status: 404 })
+        // }
 
         return NextResponse.json(user)
     } catch (error) {
