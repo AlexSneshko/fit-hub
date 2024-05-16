@@ -1,31 +1,32 @@
-"use client"
+"use client";
 
 import { toast } from "react-hot-toast";
 import { AccountTypeInfo } from "./_components/account-type-info";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const SelectTypePage = () => {
   const router = useRouter();
 
   const onUserTypeClick = async () => {
     try {
-        const response = await axios.post('/api/users');
-        toast.success("User profile created")
+      const response = await axios.post("/api/users");
+      toast.success("User profile created");
     } catch (error) {
-        toast.error("Something went wrong");
+      toast.error("Something went wrong");
     }
-  }
+  };
 
   const onGymTypeClick = async () => {
-    try {
-        const response = await axios.post('/api/gyms');
-        router.push(`/gym/${response.data.id}`)
-        toast.success("User profile created")
-    } catch (error) {
-        toast.error("Something went wrong");
-    }
-  }
+    // try {
+    //     const response = await axios.post('/api/gyms');
+    //     router.push(`/gym/${response.data.id}`)
+    //     toast.success("User profile created")
+    // } catch (error) {
+    //     toast.error("Something went wrong");
+    // }
+  };
 
   return (
     <div>
@@ -39,11 +40,13 @@ const SelectTypePage = () => {
           label="User"
           description="Become part of our active fitness community, set your goals, and access tools to achieve success."
         />
-        <AccountTypeInfo
-          onClick={onUserTypeClick}
-          label="Gym"
-          description="Manage your fitness facility, attract more clients, and deliver high-quality services to your visitors."
-        />
+        <Link href="/gym/create">
+          <AccountTypeInfo
+            onClick={onGymTypeClick}
+            label="Gym"
+            description="Manage your fitness facility, attract more clients, and deliver high-quality services to your visitors."
+          />
+        </Link>
       </div>
     </div>
   );

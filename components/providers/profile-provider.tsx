@@ -15,7 +15,7 @@ const ProfileProvider = () => {
     const user = await axios.get(`/api/users/${userId}`);
     const gym = await axios.get(`/api/gyms/${userId}`);
 
-    if (!user.data && !gym.data) {
+    if (!user.data && !gym.data && pathName !== "/gym/create") {
       router.push("/select-type");
     } 
   };
