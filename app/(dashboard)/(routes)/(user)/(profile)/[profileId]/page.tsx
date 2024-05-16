@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PostList } from "@/app/(dashboard)/_components/post/post-list";
 import { db } from "@/lib/db";
-import Image from "next/image";
 import { UserAvatar } from "@/app/(dashboard)/_components/user/user-avatar";
 
 export default async function Home({

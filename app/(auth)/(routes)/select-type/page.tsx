@@ -20,7 +20,7 @@ const SelectTypePage = () => {
   const onGymTypeClick = async () => {
     try {
         const response = await axios.post('/api/gyms');
-        router.push("/sign-in")
+        router.push(`/gym/${response.data.id}`)
         toast.success("User profile created")
     } catch (error) {
         toast.error("Something went wrong");

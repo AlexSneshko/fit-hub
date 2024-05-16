@@ -10,9 +10,9 @@ export const UserAvatar = ({ avatarUrl, imgSize }: UserAvatarProps) => {
   if (!avatarUrl) {
     return (
       <div
-        className={`flex items-center justify-center h-${imgSize} min-w-${imgSize} bg-slate-200 rounded-full`}
+        className={`flex items-center justify-center h-${imgSize} w-${imgSize} bg-slate-200 rounded-full`}
       >
-        <User className={`h-${imgSize - 8} w-${imgSize - 8} text-slate-500`} />
+        <User className={`h-${imgSize - 4} w-${imgSize - 4} text-slate-500`} />
       </div>
     );
   }

@@ -232,6 +232,7 @@ model TrainerClientRelationship {
 
 model Gym {
   id       String @id @default(uuid())
+  username String @unique
   name     String
   location String
 

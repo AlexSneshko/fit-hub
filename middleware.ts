@@ -2,7 +2,7 @@ import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 export default authMiddleware({
-  publicRoutes: ["/:id", "/gym/:id", "/posts/:id", "/search"],
+  publicRoutes: ["/:id", "/gym/:id", "/posts/:id"],
   async afterAuth(auth, req) {
     const fitLine = new URL("/fitline", req.url)
 

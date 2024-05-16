@@ -2,7 +2,6 @@ import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
-import { ProfileType } from "@prisma/client";
 
 export async function GET(
   req: Request,
@@ -56,7 +55,7 @@ export async function DELETE(
       where: {
         subscriberId: userId,
         targetUserId: params.targetId as string,
-        targerGymId: null,
+        targetGymId: null,
       },
     });
 

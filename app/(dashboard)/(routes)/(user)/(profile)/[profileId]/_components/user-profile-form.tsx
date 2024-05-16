@@ -56,7 +56,7 @@ export const UserProfileForm = ({ onSubmit, user }: UserProfileFormProps) => {
         form.setValue(formKey, user[formKey] || undefined);
       }
     }
-  }, [user]);
+  }, [form, user]);
 
   
 

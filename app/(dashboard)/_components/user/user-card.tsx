@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { MouseEvent, MouseEventHandler, useEffect, useState } from "react";
+import { db } from "@/lib/db";
 
 interface UserCardProps {
   data: User;
@@ -60,6 +61,9 @@ export const UserCard = ({ data }: UserCardProps) => {
 
   return (
     <div className="flex shadow rounded-md p-4 hover:cursor-pointer transition min-w-96">
+      {/* <Button onClick={dbReset}>
+        DB reset
+      </Button> */}
       <Link href={`/${data.id}`}>
         <UserAvatar avatarUrl={data.imageUrl} imgSize={32} />
       </Link>
