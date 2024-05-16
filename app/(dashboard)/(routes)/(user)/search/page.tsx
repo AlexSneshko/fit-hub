@@ -1,11 +1,19 @@
+import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+
 import { db } from "@/lib/db";
 import { UserList } from "@/app/(dashboard)/_components/user/user-list"
 import { SearchInput } from "@/components/search-input"
 
-
 const SearchPage = async () => {
+  const { userId } = auth();
+  
+  if (!userId) {
+    redirect("/")
+  }
+  
   const users = await db.user.findMany();
-
+  
   return (
     <div>
       <div className="px-6 pt-6">

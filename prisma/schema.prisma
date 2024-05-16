@@ -252,18 +252,18 @@ model Subscription {
   id               String      @id @default(uuid())
   subscriberId     String
   targetUserId     String?
-  targerGymId      String?
+  targetGymId      String?
   subscribtionType ProfileType
 
   subscriber User  @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
   targetUser User? @relation("UserSubscribers", fields: [targetUserId], references: [id], onDelete: Cascade)
-  targetGym  Gym?  @relation(fields: [targerGymId], references: [id], onDelete: Cascade)
+  targetGym  Gym?  @relation(fields: [targetGymId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
-  @@unique([subscriberId, targetUserId, targerGymId])
+  @@unique([subscriberId, targetUserId, targetGymId])
   @@index([targetUserId])
-  @@index([targerGymId])
+  @@index([targetGymId])
 }
 
 model GymOpenTime {
