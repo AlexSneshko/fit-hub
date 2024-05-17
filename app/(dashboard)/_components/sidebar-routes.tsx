@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart, Bell, Compass, Dumbbell, DumbbellIcon, Home, Layout, List, Search, User } from "lucide-react";
+import { BarChart, Bell, BookUser, Boxes, Compass, Dumbbell, DumbbellIcon, HeartHandshake, Home, Layout, List, Search, User, UsersRound } from "lucide-react";
 
 import { SidebarItem } from "./sidebar-item";
 import { usePathname } from "next/navigation";
@@ -40,23 +40,42 @@ const userRoutes = [
 
 const gymRoutes = [
   {
-    icon: List,
-    label: "Shared Trainings",
-    href: "/gym/sharedTrainings",
+    icon: BookUser,
+    label: "CRM",
+    href: "/gym/crm",
   },
   {
-    icon: BarChart,
-    label: "Analytics",
-    href: "/gym/analytics",
+    icon: List,
+    label: "Promotions",
+    href: "/gym/promotions",
+  },
+  {
+    icon: HeartHandshake,
+    label: "Memberships",
+    href: "/gym/memberships",
+  },
+  {
+    icon: Boxes,
+    label: "Equipment",
+    href: "/gym/equipment",
+  },
+  {
+    icon: UsersRound,
+    label: "Staff",
+    href: "/gym/staff",
   },
 ]
 
 interface SidebarRoutesProps {
   userId: string | null;
+  username?: string;
+  isTrainer?: boolean;
 }
 
 export const SidebarRoutes = ({
-  userId
+  userId,
+  username,
+  isTrainer
 }: SidebarRoutesProps) => {
   const pathname = usePathname();
 
@@ -67,10 +86,11 @@ export const SidebarRoutes = ({
   // }) : undefined;
   const isGymPage = pathname?.includes("/gym");
 
+
   const profilePage = {
     icon: User,
     label: "Profile",
-    href: isGymPage ? `/gym/${userId}` : `/${userId}`,
+    href: isGymPage ? `/gym/${username}` : `/${userId}`,
   };
   
   const routes = [profilePage, ...(isGymPage ? gymRoutes : userRoutes)]

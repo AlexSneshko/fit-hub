@@ -295,16 +295,19 @@ model GymMembership {
 }
 
 model Promotion {
-  id        String   @id @default(uuid())
-  gymId     String   @unique
-  name      String
-  firstDate DateTime
-  lastDate  DateTime
-  content   Json?
+  id          String   @id @default(uuid())
+  gymId       String
+  name        String
+  firstDate   DateTime
+  lastDate    DateTime
+  image       String?
+  description String?
 
   gym Gym @relation(fields: [gymId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+
+  @@index([gymId])
 }
 
 model Staff {
@@ -324,11 +327,11 @@ model Staff {
 }
 
 model Equipment {
-  id      String  @id @default(uuid())
-  name    String
-  image   String?
-  content Json?
-  gymId   String
+  id          String  @id @default(uuid())
+  name        String
+  image       String?
+  description String? @db.Text
+  gymId       String
 
   gym Gym @relation(fields: [gymId], references: [id], onDelete: Cascade)
 

@@ -12,8 +12,7 @@ import {
   userProfileFormSchema,
 } from "../_components/user-profile-form";
 import { ImageIcon, Pencil } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import Image from "next/image";;
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 
@@ -41,7 +40,7 @@ const EditUserProfilePage = ({ params }: { params: { profileId: string } }) => {
       .catch(() => {
         router.push(`/${params.profileId}`);
       });
-  }, []);
+  }, [params.profileId, router]);
 
   if (!user) {
     return <div>Loading...</div>;

@@ -5,6 +5,8 @@ import { useAuth } from "@clerk/nextjs";
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
+const userRoutes = ["/fitline", "/search", "/trainings", "/exercises", "/notifications"];
+
 const ProfileProvider = () => {
   const pathName = usePathname();
   const router = useRouter();
@@ -18,6 +20,18 @@ const ProfileProvider = () => {
     if (!user.data && !gym.data && pathName !== "/gym/create") {
       router.push("/select-type");
     } 
+
+    if (user.data && pathName === "/") {
+      router.push(`/user/${user.data.id}`);
+    }
+
+    if (gym.data && pathName === "/") {
+      router.push(`/gym/${gym.data.username}`);
+    }
+
+    if (gym.data && userRoutes.includes(pathName)) {
+      router.back()
+    }
   };
 
   useEffect(() => {
