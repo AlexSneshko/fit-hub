@@ -4,17 +4,18 @@ import { formatDistanceToNowStrict } from 'date-fns'
 import locale from 'date-fns/locale/en-US'
 
 import { PostWithAuthor, PostWithGymAuthor, PostWithUserAuthor } from "@/types/post";
+import { AuthorWithProfileInfo, GymAuthorWithProfileInfo, UserAuthorWithProfileInfo } from "@/types/author";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function isPostWithUserAuthor(post: PostWithAuthor): post is PostWithUserAuthor {
-  return (post as PostWithUserAuthor).authorUser !== null;
+export function isAuthorUser(author: AuthorWithProfileInfo): author is UserAuthorWithProfileInfo {
+  return (author as UserAuthorWithProfileInfo).exercises !== null;
 }
 
-export function isPostWithGymAuthor(post: PostWithAuthor): post is PostWithGymAuthor {
-  return (post as PostWithGymAuthor).authorGym !== null;
+export function isAuthorGym(author: AuthorWithProfileInfo): author is GymAuthorWithProfileInfo {
+  return (author as GymAuthorWithProfileInfo).gymOpenTime !== null;
 }
 
 const formatDistanceLocale = {

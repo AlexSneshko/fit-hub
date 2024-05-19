@@ -27,7 +27,7 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 
-export const userProfileFormSchema = z.object({
+export const userFormSchema = z.object({
   username: z.string().min(1, {
     message: "Username is required",
   }),
@@ -37,22 +37,22 @@ export const userProfileFormSchema = z.object({
   imageUrl: z.string().optional(),
 });
 
-interface UserProfileFormProps {
-  onSubmit: (values: z.infer<typeof userProfileFormSchema>) => void;
+interface UserFormProps {
+  onSubmit: (values: z.infer<typeof userFormSchema>) => void;
   user?: User;
 }
 
-export const UserProfileForm = ({ onSubmit, user }: UserProfileFormProps) => {
+export const UserForm = ({ onSubmit, user }: UserFormProps) => {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof userProfileFormSchema>>({
-    resolver: zodResolver(userProfileFormSchema),
+  const form = useForm<z.infer<typeof userFormSchema>>({
+    resolver: zodResolver(userFormSchema),
   });
 
   useEffect(() => {
     if (user) {
       for (const key in user) {
-        const formKey = key as keyof z.infer<typeof userProfileFormSchema>;
+        const formKey = key as keyof z.infer<typeof userFormSchema>;
         form.setValue(formKey, user[formKey] || undefined);
       }
     }
@@ -185,7 +185,7 @@ export const UserProfileForm = ({ onSubmit, user }: UserProfileFormProps) => {
           // </Link>
         )} */}
           {user && (
-            <Link href={`/${user?.id}`}>
+            <Link href={`/${user?.username}`}>
               <Button type="button" variant="ghost">
                 Cancel
               </Button>

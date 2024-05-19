@@ -2,12 +2,11 @@ import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 export default authMiddleware({
-  publicRoutes: ["/:id", "/gym/:id", "/posts/:id"],
+  publicRoutes: ["/:id", "/gym/:id", "/posts/:id", "/create", "/gym/create", "/api/uploadthing"],
   async afterAuth(auth, req) {
     const fitLine = new URL("/fitline", req.url);
-    const gymPrivateRoutes = ["/gym/crm", "/gym/promotions", "/gym/memberships", "/gym/memberships", "/gym/equipment", "/gym/staff"]
 
-    if (!auth.userId && (!auth.isPublicRoute || gymPrivateRoutes.includes(req.nextUrl.pathname))) {
+    if (!auth.userId && !auth.isPublicRoute) {
       return redirectToSignIn({ returnBackUrl: req.url })
     }
 

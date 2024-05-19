@@ -2,15 +2,16 @@
 
 import { z } from "zod";
 import axios from "axios";
+import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
 import { User } from "@prisma/client";
 import {
-  UserProfileForm,
-  userProfileFormSchema,
-} from "../_components/user-profile-form";
+  UserForm,
+  userFormSchema,
+} from "../../_components/user-form";
 import { ImageIcon, Pencil } from "lucide-react";
 import Image from "next/image";;
 import { Button } from "@/components/ui/button";
@@ -22,10 +23,12 @@ const formSchema = z.object({
   }),
 });
 
-const EditUserProfilePage = ({ params }: { params: { profileId: string } }) => {
+const EditUserProfilePage = ({ params }: { params: { username: string } }) => {
+  const router = useRouter();
+  const { userId } = useAuth()
+
   const [user, setUser] = useState<User>();
   const [isEditingImage, setIsEditingImage] = useState(false);
-  const router = useRouter();
 
   const toggleEdit = () => {
     setIsEditingImage((current) => !current);
@@ -33,14 +36,17 @@ const EditUserProfilePage = ({ params }: { params: { profileId: string } }) => {
 
   useEffect(() => {
     axios
-      .get(`/api/users/${params.profileId}`)
+      .get(`/api/users/${userId}`)
       .then((res) => {
+        if (!res.data) {
+          router.push(`/${params.username}`);
+        }
         setUser(res.data);
       })
       .catch(() => {
-        router.push(`/${params.profileId}`);
+        router.push(`/${params.username}`);
       });
-  }, [params.profileId, router]);
+  }, [params.username, router]);
 
   if (!user) {
     return <div>Loading...</div>;
@@ -49,7 +55,7 @@ const EditUserProfilePage = ({ params }: { params: { profileId: string } }) => {
   const onEditImage = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/users/${user.id}`, values);
-      toast.success("Course updated");
+      toast.success("Avatar updated");
       toggleEdit();
       router.refresh();
     } catch {
@@ -57,11 +63,11 @@ const EditUserProfilePage = ({ params }: { params: { profileId: string } }) => {
     }
   };
 
-  const onEditUser = async (data: z.infer<typeof userProfileFormSchema>) => {
+  const onEditUser = async (data: z.infer<typeof userFormSchema>) => {
     try {
       const response = await axios.patch(`/api/users/${user.id}`, data);
-      router.push(`/${params.profileId}`);
-      toast.success("User profile created");
+      router.push(`/${params.username}`);
+      toast.success("User profile updated");
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -106,7 +112,7 @@ const EditUserProfilePage = ({ params }: { params: { profileId: string } }) => {
         </Button>
       </div>
       <div className="md:px-80">
-        <UserProfileForm onSubmit={onEditUser} user={user} />
+        <UserForm onSubmit={onEditUser} user={user} />
       </div>
     </div>
   );

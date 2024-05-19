@@ -1,15 +1,15 @@
 "use client";
 
-import { User } from "@prisma/client";
-import Link from "next/link";
-import { UserAvatar } from "./user-avatar";
-import { Button } from "@/components/ui/button";
 import axios from "axios";
+import Link from "next/link";
 import toast from "react-hot-toast";
+import { User } from "@prisma/client";
+import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
-import { MouseEvent, MouseEventHandler, useEffect, useState } from "react";
-import { db } from "@/lib/db";
+import { MouseEvent, useEffect, useState } from "react";
+
+import { UserAvatar } from "./user-avatar";
 
 interface UserCardProps {
   data: User;
@@ -61,14 +61,11 @@ export const UserCard = ({ data }: UserCardProps) => {
 
   return (
     <div className="flex shadow rounded-md p-4 hover:cursor-pointer transition min-w-96">
-      {/* <Button onClick={dbReset}>
-        DB reset
-      </Button> */}
-      <Link href={`/${data.id}`}>
+      <Link href={`/${data.username}`}>
         <UserAvatar avatarUrl={data.imageUrl} imgSize={32} />
       </Link>
       <div className="flex flex-col ml-4 justify-between w-full">
-        <Link href={`/${data.id}`}>
+        <Link href={`/${data.username}`}>
           <div>
             <h3 className="text-lg font-semibold">{data.username}</h3>
             {fullname && <p className="text-slate-500">{fullname}</p>}

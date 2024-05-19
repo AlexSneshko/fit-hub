@@ -1,18 +1,26 @@
-import { Post } from "@prisma/client"
+import { AuthorWithPosts, AuthorWithProfileInfo } from "@/types/author"
+
 import { PostCard } from "./post-card"
-import { PostWithAuthor } from "@/types/post"
 
 interface PostListProps {
-  data: PostWithAuthor[]
+  data: AuthorWithPosts
 }
 
 export const PostList = ({
   data
 }: PostListProps) => {
+  if (data.posts.length === 0) {
+    return (
+      <div className="w-hull mt-10 flex items-center justify-center">
+        <h1>No Posts</h1>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col gap-y-6 items-center justify-center">
-      {data.map((post) => (
-        <PostCard key={post.id} data={post} />
+      {data.posts.map((post) => (
+        <PostCard key={post.id} data={post} authorName={data.username}/>
       ))}
     </div>
   )

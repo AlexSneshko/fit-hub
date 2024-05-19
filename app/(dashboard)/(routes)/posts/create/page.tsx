@@ -2,19 +2,17 @@
 
 import { z } from "zod";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 
 import { PostForm, postFormSchema } from "../_components/post-form";
-import { ProfileType } from "@prisma/client";
 
 const CreatePostPage = () => {
     const router = useRouter();
 
     const onSubmit = async (values: z.infer<typeof postFormSchema>) => {
         try {
-          console.log(values)
-          const response = await axios.post("/api/posts", {...values, authorType: ProfileType.USER});
+          const response = await axios.post("/api/posts", {...values});
           router.push(`/posts/${response.data.id}`);
           toast.success("Post created");
         } catch (error) {

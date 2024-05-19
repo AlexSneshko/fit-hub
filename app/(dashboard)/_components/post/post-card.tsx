@@ -5,16 +5,18 @@ import { useEffect, useRef, useState } from "react";
 import EditorOutput from "@/components/editor-output";
 import {
   formatTimeToNow,
-  isPostWithGymAuthor,
-  isPostWithUserAuthor,
+  isAuthorGym,
+  isAuthorUser,
 } from "@/lib/utils";
-import { PostWithAuthor } from "@/types/post";
+import { AuthorWithProfileInfo } from "@/types/author";
+import { Gym, Post, User } from "@prisma/client";
 
 interface PostCardProps {
-  data: PostWithAuthor;
+  data: Post;
+  authorName: string;
 }
 
-export const PostCard = ({ data }: PostCardProps) => {
+export const PostCard = ({ data, authorName }: PostCardProps) => {
   const pRef = useRef<HTMLParagraphElement>(null);
   console.log(data);
   const [isBlurred, setIsBlurred] = useState(false);
@@ -25,26 +27,6 @@ export const PostCard = ({ data }: PostCardProps) => {
       setIsBlurred(true);
     }
   }, []);
-
-  let authorInfo: JSX.Element | null = null;
-
-  if (isPostWithUserAuthor(data)) {
-    // If the author is a User
-    authorInfo = (
-      <span>
-        Posted by User: {data.authorUser?.id}{" "}
-        {formatTimeToNow(new Date(data.createdAt))}
-      </span>
-    );
-  } else if (isPostWithGymAuthor(data)) {
-    // If the author is a Gym
-    authorInfo = (
-      <span>
-        Posted by Gym: {data.authorGym?.name}{" "}
-        {formatTimeToNow(new Date(data.createdAt))}
-      </span>
-    );
-  }
 
   return (
     <div className="w-[600px] rounded-md bg-white shadow">
@@ -69,7 +51,10 @@ export const PostCard = ({ data }: PostCardProps) => {
               </>
             ) : null}
             <span>Posted by u/{post.author.username}</span>{" "} */}
-            {authorInfo}
+            <span>
+        Posted by User: {authorName}{" "}
+        {formatTimeToNow(new Date(data.createdAt))}
+      </span>
           </div>
           <a href={``}>
             <h1 className="text-lg font-semibold py-2 leading-6 text-gray-900">

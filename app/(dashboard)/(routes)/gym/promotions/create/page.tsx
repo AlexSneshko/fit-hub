@@ -15,8 +15,9 @@ const CreatePromotionPaage = () => {
 
   const onSubmit = async (data: z.infer<typeof promotionFormSchema>) => {
     try {
-      const response = await axios.post("/api/promotions", data);
-      router.push("/gym/promotions");
+      console.log(data)
+      // const response = await axios.post("/api/promotions", data);
+      // router.push("/gym/promotions");
       toast.success("Promotion created");
     } catch (error) {
       toast.error("Something went wrong");

@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Promotion } from "@prisma/client";
 import { CalendarIcon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,10 +29,11 @@ import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import { FileUpload } from "@/components/file-upload";
+import Image from "next/image";
 
 export const promotionFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
-  image: z.string().optional(),
+  imageUrl: z.string().optional(),
   description: z.string().optional(),
   firstDate: z.date(),
   lastDate: z.date(),
@@ -45,6 +46,8 @@ interface PromotionFormProps {
 }
 
 export const PromotionForm = ({ onSubmit, promotion }: PromotionFormProps) => {
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
   const form = useForm<z.infer<typeof promotionFormSchema>>({
     resolver: zodResolver(promotionFormSchema),
     defaultValues: {
@@ -60,6 +63,7 @@ export const PromotionForm = ({ onSubmit, promotion }: PromotionFormProps) => {
         const formKey = key as keyof z.infer<typeof promotionFormSchema>;
         form.setValue(formKey, promotion[formKey] || undefined);
       }
+      setImageUrl(promotion.imageUrl || null);
     }
   }, [form, promotion]);
 
@@ -84,29 +88,38 @@ export const PromotionForm = ({ onSubmit, promotion }: PromotionFormProps) => {
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
-          name="image"
+          name="imageUrl"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <FileUpload
-                  endpoint="imageUploader"
-                  {...field}
-                //   onChange={(url) => {
-                //     if (url) {
-                //       onEditImage({ imageUrl: url });
-                //     }
-                //   }}
-                />
+
               </FormControl>
               <FormDescription>Think of unique username</FormDescription>
               <FormMessage />
             </FormItem>
           )}
+        /> */}
+        <FileUpload
+          endpoint="imageUploader"
+          onChange={(url) => {
+            if (url) {
+              form.setValue("imageUrl", url);
+              setImageUrl(url);
+            }
+          }}
         />
-
+        {imageUrl && (
+          <div className="w-32 h-32 relative">
+            <Image
+              src={imageUrl}
+              alt="promotion image"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
         <FormField
           control={form.control}
           name="description"

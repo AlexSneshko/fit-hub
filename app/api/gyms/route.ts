@@ -11,9 +11,19 @@ export async function POST(req: Request) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
 
+        const gym = await db.gym.findUnique({
+            where: {
+                id: userId,
+            },
+        });
+
+        if (gym) {
+            return new NextResponse("Gym already exists", { status: 409 });
+        }
+
         const values = await req.json();
 
-        const gym = await db.gym.create({
+        const newGym = await db.gym.create({
             data: {
                 id: userId,
                 username: userId,
@@ -21,7 +31,7 @@ export async function POST(req: Request) {
             },
         });
 
-        return NextResponse.json(gym);
+        return NextResponse.json(newGym);
     }
     catch (error) {
         console.log("[GYMS]", error);

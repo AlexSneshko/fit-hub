@@ -1,9 +1,20 @@
 "use client";
 
-import { BarChart, Bell, BookUser, Boxes, Compass, Dumbbell, DumbbellIcon, HeartHandshake, Home, Layout, List, Search, User, UsersRound } from "lucide-react";
+import {
+  Bell,
+  BookUser,
+  Boxes,
+  Dumbbell,
+  HeartHandshake,
+  Home,
+  Layout,
+  List,
+  Search,
+  User,
+  UsersRound,
+} from "lucide-react";
 
 import { SidebarItem } from "./sidebar-item";
-import { usePathname } from "next/navigation";
 
 const userRoutes = [
   // {
@@ -64,37 +75,26 @@ const gymRoutes = [
     label: "Staff",
     href: "/gym/staff",
   },
-]
+];
 
 interface SidebarRoutesProps {
-  userId: string | null;
   username?: string;
   isTrainer?: boolean;
+  isGym?: boolean;
 }
 
 export const SidebarRoutes = ({
-  userId,
   username,
-  isTrainer
+  isTrainer,
+  isGym,
 }: SidebarRoutesProps) => {
-  const pathname = usePathname();
-
-  // const isGym = userId ? db.gym.findUnique({
-  //   where: {
-  //     id: userId
-  //   }
-  // }) : undefined;
-  const isGymPage = pathname?.includes("/gym");
-
-
   const profilePage = {
     icon: User,
     label: "Profile",
-    href: isGymPage ? `/gym/${username}` : `/${userId}`,
+    href: isGym ? `/gym/${username}` : `/${username}`,
   };
-  
-  const routes = [profilePage, ...(isGymPage ? gymRoutes : userRoutes)]
-  // const routes = userRoutes;
+
+  const routes = [profilePage, ...(isGym ? gymRoutes : userRoutes)];
 
   return (
     <div className="flex flex-col w-full">

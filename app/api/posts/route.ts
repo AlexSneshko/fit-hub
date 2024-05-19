@@ -12,10 +12,15 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    const gym = await db.gym.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
     const values = await req.json();
 
-    const author =
-      values.authorType === ProfileType.USER ? "authorUser" : "authorGym";
+    const author = gym ? "authorGym" : "authorUser";
 
     const post = await db.post.create({
       data: {
@@ -25,6 +30,7 @@ export async function POST(req: Request) {
             id: userId,
           },
         },
+        authorType: gym ? ProfileType.GYM : ProfileType.USER,
       },
     });
 
