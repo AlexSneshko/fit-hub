@@ -14,11 +14,18 @@ const PromotionsPage = async () => {
     redirect("/");
   }
 
-  const promotions = await db.promotion.findMany({
+  const gymWithPromotions = await db.gym.findUnique({
     where: {
-      gymId: userId,
+      id: userId,
+    },
+    include: {
+      promotions: true,
     },
   });
+
+  if (!gymWithPromotions) {
+    redirect("/");
+  }
 
   return (
     <div>
@@ -27,7 +34,7 @@ const PromotionsPage = async () => {
           <Plus className="w-4 h-4 mr-2" /> Promotion
         </Button>
       </Link>
-      <PromotionList data={promotions} />
+      <PromotionList data={gymWithPromotions} />
     </div>
   );
 };

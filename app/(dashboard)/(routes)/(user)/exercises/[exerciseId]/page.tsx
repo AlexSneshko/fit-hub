@@ -28,9 +28,9 @@ const ExerciseIdPage = ({
     })
     .catch((error) => {
       toast.error(error);
-      router.push("/exercises");
+      router.push("/exercises?refresh=true");
     });
-  }, []);
+  }, [params.exerciseId, router]);
   
   if (!exercise) return <div>Loading...</div>;
   

@@ -8,6 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "@prisma/client";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 
 import {
   Form,
@@ -20,17 +23,24 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 
 export const userFormSchema = z.object({
-  username: z.string().min(1, {
-    message: "Username is required",
-  }),
+  username: z
+    .string()
+    .min(1, {
+      message: "Username is required",
+    })
+    .regex(/^[a-zA-Z0-9_-]+$/, {
+      message:
+        "Username can only contain letters, numbers, dashes, and underscores",
+    }),
   name: z.string().optional(),
   surname: z.string().optional(),
   birthDate: z.date().optional(),
@@ -57,8 +67,6 @@ export const UserForm = ({ onSubmit, user }: UserFormProps) => {
       }
     }
   }, [form, user]);
-
-  
 
   const { isSubmitting, isValid } = form.formState;
 
@@ -156,15 +164,15 @@ export const UserForm = ({ onSubmit, user }: UserFormProps) => {
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
-                  mode="single"
-                  defaultMonth={field.value}
-                  selected={field.value}
-                  onSelect={field.onChange}
-                  fixedWeeks
-                  weekStartsOn={1}
-                  fromDate={new Date(1900, 0, 1)}
-                  toDate={new Date()}
-                  captionLayout="dropdown-buttons"
+                    mode="single"
+                    defaultMonth={field.value}
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    fixedWeeks
+                    weekStartsOn={1}
+                    fromDate={new Date(1900, 0, 1)}
+                    toDate={new Date()}
+                    captionLayout="dropdown-buttons"
                   />
                 </PopoverContent>
               </Popover>

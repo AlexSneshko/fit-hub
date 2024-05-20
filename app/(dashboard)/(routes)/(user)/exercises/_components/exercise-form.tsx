@@ -88,13 +88,11 @@ export const exerciseFormSchema = z.object({
 
 interface ExerciseFormProps {
   onSubmit: (values: z.infer<typeof exerciseFormSchema>) => void;
-  //   defaultValues?: z.infer<typeof exerciseFormSchema>;
   exercise?: Exercise;
 }
 
 export const ExerciseForm = ({
   onSubmit,
-  //   defaultValues
   exercise,
 }: ExerciseFormProps) => {
   const [categoryOptions, setCategoryOptions] = useState<Category[]>([]);

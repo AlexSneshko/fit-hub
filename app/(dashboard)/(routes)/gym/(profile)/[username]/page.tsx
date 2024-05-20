@@ -8,7 +8,7 @@ import { PostList } from "@/app/(dashboard)/_components/post/post-list";
 import { AuthorWithProfileInfo } from "@/types/author";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { UserAvatar } from "@/app/(dashboard)/_components/user/user-avatar";
+import { Avatar } from "@/app/(dashboard)/_components/avatar";
 
 const GymPage = async ({ params }: { params: { username: string } }) => {
   const { userId } = auth();
@@ -45,7 +45,7 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="flex md:w-[800px]">
-        {/* <UserAvatar avatarUrl={g} imgSize={32} /> */}
+        {/* <Avatar avatarUrl={g} imgSize={32} /> */}
         <div className="flex flex-col justify-between ml-4">
           <div className="flex flex-col">
             <h1 className="text-xl font-bold">{gym.username}</h1>

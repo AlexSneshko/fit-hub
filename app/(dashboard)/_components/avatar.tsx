@@ -1,12 +1,12 @@
 import { User } from "lucide-react";
 import Image from "next/image";
 
-interface UserAvatarProps {
+interface AvatarProps {
   avatarUrl: string | null | undefined;
   imgSize: number;
 }
 
-export const UserAvatar = ({ avatarUrl, imgSize }: UserAvatarProps) => {
+export const Avatar = ({ avatarUrl, imgSize }: AvatarProps) => {
   if (!avatarUrl) {
     return (
       <div

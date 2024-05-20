@@ -29,7 +29,7 @@ const CreatePage = () => {
 
   return (
     <div className="mx-auto md:px-96">
-      <h1 className="text-center text-2xl">Create Gym</h1>
+      <h1 className="text-center text-2xl">Create your profile</h1>
       <UserForm onSubmit={onSubmit} />
     </div>
   );

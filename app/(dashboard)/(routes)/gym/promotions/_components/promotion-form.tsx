@@ -115,6 +115,8 @@ export const PromotionForm = ({ onSubmit, promotion }: PromotionFormProps) => {
           <div className="w-32 h-32 relative">
             <Image
               src={imageUrl}
+              height={200}
+              width={800}
               alt="promotion image"
               className="w-full h-full object-cover"
             />

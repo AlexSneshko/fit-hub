@@ -38,7 +38,7 @@ export async function POST(req: Request) {
 
     const subscription = await db.subscription.create({
       data: {
-        subscribtionType: ProfileType.USER,
+        subscriptionType: ProfileType.USER,
         subscriber: {
           connect: {
             id: subscriberId,

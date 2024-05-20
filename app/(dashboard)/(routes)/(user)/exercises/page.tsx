@@ -1,11 +1,11 @@
 import Link from "next/link";
+import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 import { ExercisesGrid } from "./_components/exercises-grid";
-import { db } from "@/lib/db";
 
 const ExercisesPage = async () => {
   const { userId } = auth();

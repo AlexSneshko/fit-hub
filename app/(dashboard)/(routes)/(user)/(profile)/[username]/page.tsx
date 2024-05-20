@@ -1,14 +1,13 @@
 import Link from "next/link";
-import { ImageIcon, Pencil, Plus, User } from "lucide-react";
-import { SignIn, UserButton, auth } from "@clerk/nextjs";
-import { ProfileType } from "@prisma/client";
+import { Pencil, Plus } from "lucide-react";
+import { auth } from "@clerk/nextjs";;
 import { notFound, redirect } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PostList } from "@/app/(dashboard)/_components/post/post-list";
 import { db } from "@/lib/db";
-import { UserAvatar } from "@/app/(dashboard)/_components/user/user-avatar";
+import { Avatar } from "@/app/(dashboard)/_components/avatar";
 
 const UserProfilePage = async ({
   params,
@@ -56,7 +55,7 @@ const UserProfilePage = async ({
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="flex md:w-[800px]">
-        <UserAvatar avatarUrl={user.imageUrl} imgSize={32} />
+        <Avatar avatarUrl={user.imageUrl} imgSize={32} />
         <div className="flex flex-col justify-between ml-4">
           <div className="flex flex-col">
             <h1 className="text-xl font-bold">{user.username}</h1>
