@@ -106,7 +106,8 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
           </TabsList>
         </div>
         <TabsContent value="posts">
-          Posts{/* <PostList data={gymWithInfo} /> */}
+          Posts
+          <PostList data={gymWithInfo} />
         </TabsContent>
         <TabsContent value="trainers">Trainers</TabsContent>
         <TabsContent value="promotions">

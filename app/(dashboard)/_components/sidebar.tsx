@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { LogOut } from "lucide-react";
-import { SignInButton, UserButton, auth } from "@clerk/nextjs";
+import { SignInButton, SignOutButton, UserButton, auth } from "@clerk/nextjs";
 
 import Logo from "./logo";
 import { Button } from "@/components/ui/button";
@@ -10,12 +10,9 @@ import { db } from "@/lib/db";
 export const Sidebar = async () => {
   const { userId } = auth();
 
-
-  // TODO: Add Registration 
+  // TODO: Add Registration
   if (!userId) {
-    return (
-      <SignInButton />
-    )
+    return <SignInButton />;
   }
 
   let username: string | undefined;
@@ -49,18 +46,45 @@ export const Sidebar = async () => {
       <div className="p-6">
         <Logo />
       </div>
-      <div className="flex flex-col w-full">
-        <SidebarRoutes username={username} isTrainer={isTrainer} isGym={isGym} />
-      </div>
-      <div className="flex items-center mt-auto gap-x-2 p-5 pb-8">
-        <Link href="/">
-          <Button size="sm" variant="ghost" className="text-slate-500">
-            <LogOut className="w-4 h-4 mr-2" />
-            Exit
-          </Button>
-        </Link>
-        <UserButton afterSignOutUrl="/" />
-      </div>
+      {!username && (
+        <div className="w-full h-full flex flex-col items-center justify-center">
+          <Link href="/select-type">
+            <Button size="sm" variant="link" className="text-slate-500">
+              Choose type to continue
+            </Button>
+          </Link>
+          <SignOutButton>
+            <Link href="/sign-in">
+              <Button size="sm" variant="ghost" className="text-slate-500">
+                <LogOut className="w-4 h-4 mr-2" />
+                Exit
+              </Button>
+            </Link>
+          </SignOutButton>
+        </div>
+      )}
+      {username && (
+        <>
+          <div className="flex flex-col w-full">
+            <SidebarRoutes
+              username={username}
+              isTrainer={isTrainer}
+              isGym={isGym}
+            />
+          </div>
+          <div className="flex items-center mt-auto gap-x-2 p-5 pb-8">
+            <SignOutButton>
+              <Link href="/">
+                <Button size="sm" variant="ghost" className="text-slate-500">
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Exit
+                </Button>
+              </Link>
+            </SignOutButton>
+            <UserButton afterSignOutUrl="/sign-in" />
+          </div>
+        </>
+      )}
     </nav>
   );
 };
