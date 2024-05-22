@@ -1,8 +1,8 @@
-import { GymAuthorwithEquipment } from "@/types/gym-author";
+import { GymAuthorWithEquipment } from "@/types/gym-author";
 import { EquipmentCard } from "./equipment-card";
 
 interface PromotionListProps {
-  data: GymAuthorwithEquipment;
+  data: GymAuthorWithEquipment;
 }
 
 export const EquipmentList = ({ data }: PromotionListProps) => {

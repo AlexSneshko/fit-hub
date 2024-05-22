@@ -11,6 +11,7 @@ import { PostList } from "@/app/(dashboard)/_components/post/post-list";
 import { PromotionList } from "@/app/(dashboard)/_components/promotion/promotion-list";
 import { MembershipList } from "@/app/(dashboard)/_components/membership/membership-list";
 import { EquipmentList } from "@/app/(dashboard)/_components/equipment/equipment-list";
+import { StaffList } from "@/app/(dashboard)/_components/staff/staff-list";
 
 const GymPage = async ({ params }: { params: { username: string } }) => {
   const { userId } = auth();
@@ -39,7 +40,11 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
           createdAt: "desc",
         },
       },
-      staff: true,
+      staff: {
+        include:{
+          user: true
+        }
+      },
     },
   });
 
@@ -113,7 +118,9 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
         <TabsContent value="equipment">
           <EquipmentList data={gymWithInfo} />
         </TabsContent>
-        <TabsContent value="staff">Staff</TabsContent>
+        <TabsContent value="staff">
+          <StaffList data={gymWithInfo} />
+        </TabsContent>
       </Tabs>
     </div>
   );

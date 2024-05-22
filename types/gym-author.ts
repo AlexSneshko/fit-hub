@@ -14,7 +14,11 @@ export type GymAuthorWithProfileInfo = Prisma.GymGetPayload<{
     gymMemberships: true;
     equipment: true;
     promotions: true;
-    staff: true;
+    staff: {
+      include: {
+        user: true;
+      }
+    };
   };
 }>;
 
@@ -35,14 +39,24 @@ export type GymAuthorWithPromotions = Prisma.GymGetPayload<{
   };
 }>;
 
-export type GymAuthorwithMemberships = Prisma.GymGetPayload<{
+export type GymAuthorWithMemberships = Prisma.GymGetPayload<{
   include: {
     gymMemberships: true;
   };
 }>;
 
-export type GymAuthorwithEquipment = Prisma.GymGetPayload<{
+export type GymAuthorWithEquipment = Prisma.GymGetPayload<{
   include: {
     equipment: true;
+  };
+}>;
+
+export type GymAuthorWithStaff = Prisma.GymGetPayload<{
+  include: {
+    staff: {
+      include: {
+        user: true;
+      }
+    };
   };
 }>;

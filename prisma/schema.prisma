@@ -322,13 +322,14 @@ model Promotion {
 }
 
 model Staff {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   fullName    String
   role        String
   imageUrl    String?
-  description String? @db.Text
+  description String?  @db.Text
+  firstDate   DateTime
   gymId       String
-  userId      String? @unique
+  userId      String?  @unique
 
   gym  Gym   @relation(fields: [gymId], references: [id], onDelete: Cascade)
   user User? @relation(fields: [userId], references: [id])

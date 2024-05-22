@@ -1,9 +1,9 @@
-import { GymAuthorwithMemberships } from "@/types/gym-author"
+import { GymAuthorWithMemberships } from "@/types/gym-author"
 
 import MembershipCard from "./membership-card";
 
 interface PromotionListProps {
-    data: GymAuthorwithMemberships
+    data: GymAuthorWithMemberships
 }
 
 export const MembershipList = ({

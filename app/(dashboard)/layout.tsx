@@ -1,7 +1,31 @@
-import { Sidebar } from './_components/sidebar';
-import { Navbar } from './_components/navbar';
+import { db } from '@/lib/db';
+import { auth } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+import { Navbar } from './_components/navbar';
+import { Sidebar } from './_components/sidebar';
+
+const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
+  const { userId } = await auth();
+
+  if (userId) {
+      const user = await db.user.findUnique({
+        where: {
+          id: userId
+        }
+      })
+    
+      const gym = await db.gym.findUnique({
+        where: {
+          id: userId
+        }
+      })
+
+      if (!user && !gym) {
+        redirect("/select-type")
+      }
+  }
+
 
   return (
     <div className='h-full'>
