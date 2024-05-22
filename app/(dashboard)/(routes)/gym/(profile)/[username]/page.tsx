@@ -8,12 +8,13 @@ import { PostList } from "@/app/(dashboard)/_components/post/post-list";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/app/(dashboard)/_components/avatar";
-import { PromotionList } from "@/app/(dashboard)/_components/promotions/promotion-list";
+import { PromotionList } from "@/app/(dashboard)/_components/promotion/promotion-list";
+import { MembershipList } from "@/app/(dashboard)/_components/membership/membership-list";
 
 const GymPage = async ({ params }: { params: { username: string } }) => {
   const { userId } = auth();
 
-  const gym = await db.gym.findUnique({
+  const gymWithInfo = await db.gym.findUnique({
     where: {
       username: params.username,
     },
@@ -38,34 +39,34 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
   });
 
   // TODO: rethink of logic
-  if (!gym && !userId) {
+  if (!gymWithInfo && !userId) {
     redirect("/sign-in");
   }
 
-  if (!gym) {
+  if (!gymWithInfo) {
     notFound();
   }
 
   // change to username comparing
-  const isOwner = userId === gym.id;
+  const isOwner = userId === gymWithInfo.id;
 
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="flex md:w-[800px]">
-        <Avatar avatarUrl={gym.imageUrl} imgSize={128} />
+        <Avatar avatarUrl={gymWithInfo.imageUrl} imgSize={128} />
         <div className="flex flex-col justify-between ml-4">
           <div className="flex flex-col">
-            <h1 className="text-xl font-bold">{gym.username}</h1>
-            <p className="text-slate-500">{gym.name}</p>
+            <h1 className="text-xl font-bold">{gymWithInfo.username}</h1>
+            <p className="text-slate-500">{gymWithInfo.name}</p>
           </div>
           <div className="flex gap-x-2 justify-self-end self-end place-self-end">
             <p className="text-slate-500">
-              Subscribers: {gym.subscribers.length}
+              Subscribers: {gymWithInfo.subscribers.length}
             </p>
           </div>
         </div>
         {isOwner && (
-          <Link href={`/gym/${gym.username}/edit`}>
+          <Link href={`/gym/${gymWithInfo.username}/edit`}>
             <Button variant="outline">
               <Pencil className="w-4 h-4 mr-2" /> Edit
             </Button>
@@ -95,13 +96,15 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
           </TabsList>
         </div>
         <TabsContent value="posts">
-          <PostList data={gym} />
+          Posts{/* <PostList data={gymWithInfo} /> */}
         </TabsContent>
         <TabsContent value="trainers">Trainers</TabsContent>
         <TabsContent value="promotions">
-          <PromotionList data={gym} />
+          <PromotionList data={gymWithInfo} />
         </TabsContent>
-        <TabsContent value="memberships">Memberships</TabsContent>
+        <TabsContent value="memberships">
+          <MembershipList data={gymWithInfo} />
+        </TabsContent>
         <TabsContent value="equipment">Equipment</TabsContent>
         <TabsContent value="staff">Staff</TabsContent>
       </Tabs>

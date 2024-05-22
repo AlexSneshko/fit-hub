@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
-import { PromotionList } from "../../../_components/promotions/promotion-list";
+import { PromotionList } from "../../../_components/promotion/promotion-list";
 
 const PromotionsPage = async () => {
   const { userId } = auth();

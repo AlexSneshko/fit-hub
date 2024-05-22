@@ -3,52 +3,50 @@ import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 
-export async function PATCH(req: Request, { params }: { params: { promotionId: string } }) {
+export async function PATCH(req: Request, { params }: { params: { membershipId: string } }) {
     try {
         const { userId } = auth();
-        const { promotionId } = params;
+        const { membershipId } = params;
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 })
         }
         const values = await req.json();
-        const promotion = await db.promotion.update({
+        const membeship = await db.gymMembership.update({
             where: {
-                id: promotionId
+                id: membershipId
             },
             data: {
                 ...values
             }
         })
-        return NextResponse.json(promotion)
+        return NextResponse.json(membeship)
     } catch (error) {
-        console.log("[PROMOTION_ID]", error);
+        console.log("[MEMBERSHIP_ID]", error);
         return new NextResponse("Internal error", { status: 500 })
     }
 }
 
-export async function GET(req: Request, { params }: { params: { promotionId: string } }) {
+export async function GET(req: Request, { params }: { params: { membershipId: string } }) {
     try {
         const { userId } = auth();
-
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 })
         }
-        
-        const { promotionId } = params;
-        
-        const promotion = await db.promotion.findUnique({
+        const { membershipId } = params;
+
+        const membeship = await db.gymMembership.findUnique({
             where: {
-                id: promotionId
+                id: membershipId
             }
         })
-        return NextResponse.json(promotion)
+        return NextResponse.json(membeship)
     } catch (error) {
-        console.log("[PROMOTION_ID]", error);
+        console.log("[MEMBERSHIP_ID]", error);
         return new NextResponse("Internal error", { status: 500 })
     }
 }
 
-export async function DELETE(req: Request, { params }: { params: { promotionId: string } }) {
+export async function DELETE(req: Request, { params }: { params: { membershipId: string } }) {
     try {
         const { userId } = auth();
 
@@ -56,18 +54,18 @@ export async function DELETE(req: Request, { params }: { params: { promotionId: 
             return new NextResponse("Unauthorized", { status: 401 })
         }
 
-        const { promotionId } = params;
+        const { membershipId } = params;
 
-        const promotion = await db.promotion.delete({
+        const membership = await db.gymMembership.delete({
             where: {
-                id: promotionId,
+                id: membershipId,
                 gymId: userId
             }
         })
         
-        return NextResponse.json(promotion)
+        return NextResponse.json(membership)
     } catch (error) {
-        console.log("[PROMOTION_ID]", error);
+        console.log("[MEMBERSHIP_ID]", error);
         return new NextResponse("Internal error", { status: 500 })
     }
 }

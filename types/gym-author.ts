@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from "@prisma/client";
 
 export type GymAuthorWithProfileInfo = Prisma.GymGetPayload<{
   include: {
@@ -32,5 +32,11 @@ export type GymAuthorWithPosts = Prisma.GymGetPayload<{
 export type GymAuthorWithPromotions = Prisma.GymGetPayload<{
   include: {
     promotions: true;
+  };
+}>;
+
+export type GymAuthorwithMemberships = Prisma.GymGetPayload<{
+  include: {
+    gymMemberships: true;
   };
 }>;

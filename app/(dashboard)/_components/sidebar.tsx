@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { LogOut } from "lucide-react";
-import { UserButton, auth } from "@clerk/nextjs";
+import { SignInButton, UserButton, auth } from "@clerk/nextjs";
 
 import Logo from "./logo";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,14 @@ import { db } from "@/lib/db";
 
 export const Sidebar = async () => {
   const { userId } = auth();
+
+
+  // TODO: Add Registration 
+  if (!userId) {
+    return (
+      <SignInButton />
+    )
+  }
 
   let username: string | undefined;
   let isTrainer: boolean | undefined;

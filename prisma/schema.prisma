@@ -291,7 +291,7 @@ model GymOpenTime {
 
 model GymMembership {
   id          String @id @default(uuid())
-  gymId       String @unique
+  gymId       String
   name        String
   price       Float
   description String @db.Text
@@ -300,6 +300,8 @@ model GymMembership {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([gymId])
 }
 
 model Promotion {

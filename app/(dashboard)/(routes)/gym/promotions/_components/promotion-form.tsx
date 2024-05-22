@@ -48,9 +48,7 @@ interface PromotionFormProps {
 export const PromotionForm = ({ onSubmit, promotion }: PromotionFormProps) => {
   const [imageUrl, setImageUrl] = useState(promotion?.imageUrl);
   const [editingImage, setEditingImage] = useState(false);
-
-  console.log(promotion)
-
+  
   const form = useForm<z.infer<typeof promotionFormSchema>>({
     resolver: zodResolver(promotionFormSchema),
     defaultValues: {
