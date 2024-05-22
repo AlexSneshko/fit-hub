@@ -68,7 +68,7 @@ const gymRoutes = [
   {
     icon: Boxes,
     label: "Equipment",
-    href: "/gym/equipment",
+    href: "/gym/equipments",
   },
   {
     icon: UsersRound,

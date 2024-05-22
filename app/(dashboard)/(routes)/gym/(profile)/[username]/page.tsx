@@ -4,12 +4,13 @@ import { auth } from "@clerk/nextjs";
 import { notFound, redirect } from "next/navigation";
 import { Pencil, Plus } from "lucide-react";
 
-import { PostList } from "@/app/(dashboard)/_components/post/post-list";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/app/(dashboard)/_components/avatar";
+import { PostList } from "@/app/(dashboard)/_components/post/post-list";
 import { PromotionList } from "@/app/(dashboard)/_components/promotion/promotion-list";
 import { MembershipList } from "@/app/(dashboard)/_components/membership/membership-list";
+import { EquipmentList } from "@/app/(dashboard)/_components/equipment/equipment-list";
 
 const GymPage = async ({ params }: { params: { username: string } }) => {
   const { userId } = auth();
@@ -33,7 +34,11 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
       trainers: true,
       gymMemberships: true,
       equipment: true,
-      promotions: true,
+      promotions: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
       staff: true,
     },
   });
@@ -105,7 +110,9 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
         <TabsContent value="memberships">
           <MembershipList data={gymWithInfo} />
         </TabsContent>
-        <TabsContent value="equipment">Equipment</TabsContent>
+        <TabsContent value="equipment">
+          <EquipmentList data={gymWithInfo} />
+        </TabsContent>
         <TabsContent value="staff">Staff</TabsContent>
       </Tabs>
     </div>

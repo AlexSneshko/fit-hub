@@ -1,5 +1,3 @@
-import { Promotion } from "@prisma/client";
-
 import { PromotionCard } from "./promotion-card";
 import { GymAuthorWithPromotions } from "@/types/gym-author";
 

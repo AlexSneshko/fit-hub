@@ -6,11 +6,14 @@ import { db } from "@/lib/db";
 export async function PATCH(req: Request, { params }: { params: { promotionId: string } }) {
     try {
         const { userId } = auth();
-        const { promotionId } = params;
+
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 })
         }
+
+        const { promotionId } = params;
         const values = await req.json();
+
         const promotion = await db.promotion.update({
             where: {
                 id: promotionId
@@ -35,12 +38,13 @@ export async function GET(req: Request, { params }: { params: { promotionId: str
         }
         
         const { promotionId } = params;
-        
+
         const promotion = await db.promotion.findUnique({
             where: {
                 id: promotionId
             }
         })
+        
         return NextResponse.json(promotion)
     } catch (error) {
         console.log("[PROMOTION_ID]", error);

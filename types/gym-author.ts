@@ -40,3 +40,9 @@ export type GymAuthorwithMemberships = Prisma.GymGetPayload<{
     gymMemberships: true;
   };
 }>;
+
+export type GymAuthorwithEquipment = Prisma.GymGetPayload<{
+  include: {
+    equipment: true;
+  };
+}>;

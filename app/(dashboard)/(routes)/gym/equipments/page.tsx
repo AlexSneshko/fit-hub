@@ -5,41 +5,41 @@ import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
-import { PromotionList } from "@/app/(dashboard)/_components/promotion/promotion-list";
+import { EquipmentList } from "@/app/(dashboard)/_components/equipment/equipment-list";
 
-const PromotionsPage = async () => {
+const EquipmentsPage = async () => {
   const { userId } = auth();
 
   if (!userId) {
     redirect("/");
   }
 
-  const gymWithPromotions = await db.gym.findUnique({
+  const gymWithEquipments = await db.gym.findUnique({
     where: {
       id: userId,
     },
     include: {
-      promotions: true,
+      equipment: true,
     },
   });
 
-  if (!gymWithPromotions) {
+  if (!gymWithEquipments) {
     redirect("/");
   }
 
   return (
     <div>
       <div className="flex items-center justify-between px-4 mb-6">
-        <h1 className="text-2xl font-semibold">Promotions</h1>
-        <Link href="/gym/promotions/create">
+        <h1 className="text-2xl font-semibold">Equipments</h1>
+        <Link href="/gym/equipments/create">
           <Button variant="outline">
-            <Plus className="w-4 h-4 mr-2" /> Promotion
+            <Plus className="w-4 h-4 mr-2" /> Equipment
           </Button>
         </Link>
       </div>
-      <PromotionList data={gymWithPromotions} />
+      <EquipmentList data={gymWithEquipments} />
     </div>
   );
-};
+}
 
-export default PromotionsPage;
+export default EquipmentsPage
