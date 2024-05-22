@@ -35,11 +35,6 @@ const ProfileProvider = () => {
   };
 
   useEffect(() => {
-    // axios.get(`/api/users/${userId}`).then((profile) => {
-    //   if (!profile.data) {
-    //     router.push("/select-type");
-    //   }
-    // });
     checkUserExistance()
   }, [checkUserExistance, router, userId]);
 

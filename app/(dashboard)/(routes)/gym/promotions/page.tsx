@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
-import { PromotionList } from "./_components/promotion-list";
+import { PromotionList } from "../../../_components/promotions/promotion-list";
 
 const PromotionsPage = async () => {
   const { userId } = auth();
@@ -29,11 +29,14 @@ const PromotionsPage = async () => {
 
   return (
     <div>
-      <Link href="/gym/promotions/create">
-        <Button variant="outline">
-          <Plus className="w-4 h-4 mr-2" /> Promotion
-        </Button>
-      </Link>
+      <div className="flex items-center justify-between px-4 mb-6">
+        <h1 className="text-2xl font-semibold">Promotions</h1>
+        <Link href="/gym/promotions/create">
+          <Button variant="outline">
+            <Plus className="w-4 h-4 mr-2" /> Promotion
+          </Button>
+        </Link>
+      </div>
       <PromotionList data={gymWithPromotions} />
     </div>
   );

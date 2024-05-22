@@ -7,22 +7,30 @@ interface AvatarProps {
 }
 
 export const Avatar = ({ avatarUrl, imgSize }: AvatarProps) => {
+  const sizeStyle = {
+    width: `${imgSize}px`,
+    height: `${imgSize}px`,
+  };
+
   if (!avatarUrl) {
     return (
       <div
-        className={`flex items-center justify-center h-${imgSize} w-${imgSize} bg-slate-200 rounded-full`}
+        style={sizeStyle}
+        className="flex items-center justify-center bg-slate-200 rounded-full"
       >
-        <User className={`h-${imgSize - 4} w-${imgSize - 4} text-slate-500`} />
+        <User className="text-slate-500" size={imgSize * 0.6} />
       </div>
     );
   }
+
   return (
-    <div className={`relative aspect-video w-${imgSize} h-${imgSize}`}>
+    <div style={sizeStyle} className="relative rounded-full overflow-hidden">
       <Image
         alt="Avatar"
-        fill
-        className={`rounded-full`}
         src={avatarUrl}
+        layout="fill"
+        objectFit="cover"
+        className="rounded-full"
       />
     </div>
   );

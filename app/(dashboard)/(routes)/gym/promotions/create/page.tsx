@@ -24,7 +24,8 @@ const CreatePromotionPaage = () => {
   };
 
   return (
-    <div>
+    <div className="mx-auto w-2/3">
+      <h1 className="text-center text-2xl">Create Promotion</h1>
       <PromotionForm onSubmit={onSubmit} />
     </div>
   );

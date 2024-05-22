@@ -3,8 +3,9 @@ import { twMerge } from "tailwind-merge"
 import { formatDistanceToNowStrict } from 'date-fns'
 import locale from 'date-fns/locale/en-US'
 
-import { PostWithAuthor, PostWithGymAuthor, PostWithUserAuthor } from "@/types/post";
-import { AuthorWithProfileInfo, GymAuthorWithProfileInfo, UserAuthorWithProfileInfo } from "@/types/author";
+import { AuthorWithProfileInfo } from "@/types/author";
+import { UserAuthorWithProfileInfo } from "@/types/user-author";
+import { GymAuthorWithProfileInfo } from "@/types/gym-author";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

@@ -5,30 +5,37 @@ import { notFound, redirect } from "next/navigation";
 import { Pencil, Plus } from "lucide-react";
 
 import { PostList } from "@/app/(dashboard)/_components/post/post-list";
-import { AuthorWithProfileInfo } from "@/types/author";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/app/(dashboard)/_components/avatar";
+import { PromotionList } from "@/app/(dashboard)/_components/promotions/promotion-list";
 
 const GymPage = async ({ params }: { params: { username: string } }) => {
   const { userId } = auth();
 
-  const gym = (await db.gym.findUnique({
+  const gym = await db.gym.findUnique({
     where: {
       username: params.username,
     },
     include: {
       subscribers: true,
       gymOpenTime: true,
-      posts: true,
+      posts: {
+        include: {
+          likes: true,
+          comments: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
       trainers: true,
       gymMemberships: true,
       equipment: true,
       promotions: true,
       staff: true,
     },
-  })) as AuthorWithProfileInfo;
-
+  });
 
   // TODO: rethink of logic
   if (!gym && !userId) {
@@ -45,7 +52,7 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="flex md:w-[800px]">
-        {/* <Avatar avatarUrl={g} imgSize={32} /> */}
+        <Avatar avatarUrl={gym.imageUrl} imgSize={128} />
         <div className="flex flex-col justify-between ml-4">
           <div className="flex flex-col">
             <h1 className="text-xl font-bold">{gym.username}</h1>
@@ -58,7 +65,7 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
           </div>
         </div>
         {isOwner && (
-          <Link href={`/${gym.id}/edit`}>
+          <Link href={`/gym/${gym.username}/edit`}>
             <Button variant="outline">
               <Pencil className="w-4 h-4 mr-2" /> Edit
             </Button>
@@ -91,7 +98,9 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
           <PostList data={gym} />
         </TabsContent>
         <TabsContent value="trainers">Trainers</TabsContent>
-        <TabsContent value="promotions">Promotions</TabsContent>
+        <TabsContent value="promotions">
+          <PromotionList data={gym} />
+        </TabsContent>
         <TabsContent value="memberships">Memberships</TabsContent>
         <TabsContent value="equipment">Equipment</TabsContent>
         <TabsContent value="staff">Staff</TabsContent>

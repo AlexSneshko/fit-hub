@@ -1,12 +1,21 @@
-import { Exercise, Post, Subscription, User } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
-export type UserAuthorWithProfileInfo = User & {
-  subscribers: Subscription[];
-  subscriptions: Subscription[];
-  posts: Post[];
-  exercises: Exercise[];
-};
+export type UserAuthorWithProfileInfo = Prisma.UserGetPayload<{
+  include: {
+    subscriptions: true;
+    subscribers: true;
+    exercises: true;
+    posts: {
+      include: {
+        likes: true;
+        comments: true;
+      };
+    };
+  };
+}>;
 
-export type UserAuthorWithPosts = User & {
-  posts: Post[];
-};
+export type UserAuthorWithPosts = Prisma.UserGetPayload<{
+  include: {
+    posts: true;
+  };
+}>;

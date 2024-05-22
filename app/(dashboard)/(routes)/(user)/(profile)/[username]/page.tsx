@@ -23,8 +23,16 @@ const UserProfilePage = async ({
     include: {
       subscriptions: true,
       subscribers: true,
-      posts: true,
       exercises: true,
+      posts: {
+        include: {
+          likes: true,
+          comments: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
 
@@ -36,18 +44,7 @@ const UserProfilePage = async ({
     notFound();
   }
 
-  // change to username comparing
   const isOwner = user.username === params.username;
-
-  // const posts = await db.post.findMany({
-  //   where: {
-  //     authorType: ProfileType.USER,
-  //     authorUserId: params.profileId,
-  //   },
-  //   include: {
-  //     authorUser: true,
-  //   },
-  // });
 
   const fullname =
     user?.name || user?.surname ? `${user?.name} ${user?.surname}` : null;

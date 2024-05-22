@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { Promotion } from "@prisma/client";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Pencil } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -46,7 +46,10 @@ interface PromotionFormProps {
 }
 
 export const PromotionForm = ({ onSubmit, promotion }: PromotionFormProps) => {
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState(promotion?.imageUrl);
+  const [editingImage, setEditingImage] = useState(false);
+
+  console.log(promotion)
 
   const form = useForm<z.infer<typeof promotionFormSchema>>({
     resolver: zodResolver(promotionFormSchema),
@@ -61,9 +64,17 @@ export const PromotionForm = ({ onSubmit, promotion }: PromotionFormProps) => {
     if (promotion) {
       for (const key in promotion) {
         const formKey = key as keyof z.infer<typeof promotionFormSchema>;
+        
+        if (formKey === "firstDate" || formKey === "lastDate") {
+          console.log(promotion[formKey])
+          form.setValue(formKey, new Date(promotion[formKey]));
+          continue;
+        }
+
         form.setValue(formKey, promotion[formKey] || undefined);
       }
       setImageUrl(promotion.imageUrl || null);
+      setEditingImage(!!promotion.imageUrl);
     }
   }, [form, promotion]);
 
@@ -88,38 +99,61 @@ export const PromotionForm = ({ onSubmit, promotion }: PromotionFormProps) => {
             </FormItem>
           )}
         />
-        {/* <FormField
-          control={form.control}
-          name="imageUrl"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-
-              </FormControl>
-              <FormDescription>Think of unique username</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-        <FileUpload
-          endpoint="imageUploader"
-          onChange={(url) => {
-            if (url) {
-              form.setValue("imageUrl", url);
-              setImageUrl(url);
-            }
-          }}
-        />
-        {imageUrl && (
-          <div className="w-32 h-32 relative">
-            <Image
-              src={imageUrl}
-              height={200}
-              width={800}
-              alt="promotion image"
-              className="w-full h-full object-cover"
+        {!editingImage && (
+          <>
+            <FormField
+              control={form.control}
+              name="imageUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image</FormLabel>
+                  <FormControl>
+                    <div className="flex gap-x-4 justify-center">
+                      <FileUpload
+                        endpoint="imageUploader"
+                        onChange={(url) => {
+                          if (url) {
+                            form.setValue("imageUrl", url);
+                            setImageUrl(url);
+                            setEditingImage(true);
+                          }
+                        }}
+                      />
+                      {imageUrl && (
+                        <Button
+                          variant="outline"
+                          onClick={() => setEditingImage(true)}
+                          className="mt-2"
+                        >
+                          <Pencil className="w-4 h-4 mr-2" /> Cancel
+                        </Button>
+                      )}
+                    </div>
+                  </FormControl>
+                  <FormDescription>Think of unique username</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
+          </>
+        )}
+        {editingImage && imageUrl && (
+          <div>
+            <h3 className="text-sm mb-0 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Image Preview
+            </h3>
+            <div className="flex gap-x-4 mt-2 justify-center">
+              <Image
+                src={imageUrl}
+                width={200}
+                height={120}
+                alt="promotion image"
+                className="object-cover"
+              />
+              <Button variant="outline" onClick={() => setEditingImage(false)}>
+                <Pencil className="w-4 h-4 mr-2" /> Edit
+              </Button>
+            </div>
           </div>
         )}
         <FormField
@@ -131,6 +165,7 @@ export const PromotionForm = ({ onSubmit, promotion }: PromotionFormProps) => {
               <FormControl>
                 <Textarea
                   {...field}
+                  rows={7}
                   disabled={isSubmitting}
                   placeholder="[AAAAAAAAAA] e.g. Advaced web development"
                 />
@@ -174,7 +209,7 @@ export const PromotionForm = ({ onSubmit, promotion }: PromotionFormProps) => {
                     fixedWeeks
                     fromDate={new Date(1900, 0, 1)}
                     // toDate={new Date(3000, 0, 0)}
-                    toYear={2040}
+                    toYear={2222}
                     captionLayout="dropdown-buttons"
                   />
                 </PopoverContent>
@@ -220,7 +255,7 @@ export const PromotionForm = ({ onSubmit, promotion }: PromotionFormProps) => {
                     fixedWeeks
                     weekStartsOn={1}
                     fromDate={new Date(1900, 0, 1)}
-                    toDate={new Date()}
+                    toYear={2222}
                     captionLayout="dropdown-buttons"
                   />
                 </PopoverContent>
@@ -241,13 +276,11 @@ export const PromotionForm = ({ onSubmit, promotion }: PromotionFormProps) => {
             </Button>
           // </Link>
         )} */}
-          {promotion && (
-            <Link href="/gym/promotions">
-              <Button type="button" variant="ghost">
-                Cancel
-              </Button>
-            </Link>
-          )}
+          <Link href={promotion ? `/gym/promotions/${promotion.id}` : "/gym/promotions"}>
+            <Button type="button" variant="ghost">
+              Cancel
+            </Button>
+          </Link>
           <Button type="submit" disabled={isSubmitting}>
             Continue
           </Button>

@@ -42,7 +42,7 @@ model User {
 model Exercise {
   id               String  @id @default(uuid())
   title            String
-  description      String  @db.Text()
+  description      String  @db.Text
   duration         String?
   restTime         String?
   weight           Float?
@@ -294,7 +294,7 @@ model GymMembership {
   gymId       String @unique
   name        String
   price       Float
-  description String
+  description String @db.Text
 
   gym Gym @relation(fields: [gymId], references: [id], onDelete: Cascade)
 
@@ -309,7 +309,7 @@ model Promotion {
   firstDate   DateTime
   lastDate    DateTime
   imageUrl    String?
-  description String?
+  description String   @db.Text
 
   gym Gym @relation(fields: [gymId], references: [id], onDelete: Cascade)
 

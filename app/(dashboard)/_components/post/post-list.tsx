@@ -1,4 +1,4 @@
-import { AuthorWithPosts, AuthorWithProfileInfo } from "@/types/author"
+import { AuthorWithPosts } from "@/types/author"
 
 import { PostCard } from "./post-card"
 

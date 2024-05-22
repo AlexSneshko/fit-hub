@@ -1,30 +1,36 @@
-import {
-  Equipment,
-  Gym,
-  GymMembership,
-  GymOpenTime,
-  Post,
-  Promotion,
-  Staff,
-  Subscription,
-  Trainer,
-} from "@prisma/client";
+import { Prisma } from '@prisma/client';
 
-export type GymAuthorWithProfileInfo = Gym & {
-  subscribers: Subscription[];
-  gymOpenTime: GymOpenTime | null;
-  posts: Post[];
-  trainers: Trainer[];
-  gymMemberships: GymMembership[];
-  equipment: Equipment[];
-  promotions: Promotion[];
-  staff: Staff[];
-};
+export type GymAuthorWithProfileInfo = Prisma.GymGetPayload<{
+  include: {
+    subscribers: true;
+    gymOpenTime: true;
+    posts: {
+      include: {
+        likes: true;
+        comments: true;
+      };
+    };
+    trainers: true;
+    gymMemberships: true;
+    equipment: true;
+    promotions: true;
+    staff: true;
+  };
+}>;
 
-export type GymAuthorWithPosts = Gym & {
-  posts: Post[];
-};
+export type GymAuthorWithPosts = Prisma.GymGetPayload<{
+  include: {
+    posts: {
+      include: {
+        likes: true;
+        comments: true;
+      };
+    };
+  };
+}>;
 
-export type GymAuthorWithPromotions = Gym & {
-  promotions: Promotion[];
-}
+export type GymAuthorWithPromotions = Prisma.GymGetPayload<{
+  include: {
+    promotions: true;
+  };
+}>;
