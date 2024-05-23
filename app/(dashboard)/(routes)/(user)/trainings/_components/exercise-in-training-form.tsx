@@ -109,14 +109,11 @@ export const ExerciseInTrainingForm = ({
             </FormItem>
           )}
         />
-
         <div className="flex items-center justify-end gap-x-2">
           {exercise && (
-            // <Link href="/exercises">
             <Button type="button" variant="destructive" onClick={onDelete}>
               Delete
             </Button>
-            // </Link>
           )}
           <Button type="submit" disabled={/*!isValid ||*/ isSubmitting}>
             Submit

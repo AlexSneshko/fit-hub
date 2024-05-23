@@ -69,7 +69,12 @@ const UserProfilePage = async ({
         <div className="flex flex-col justify-between ml-4">
           <div className="flex flex-col">
             <h1 className="text-xl font-bold">{user.username}</h1>
-            {fullname ? <p className="text-slate-500">{fullname}</p> : null}
+            {fullname && <p className="text-slate-500">{fullname}</p>}
+            {user.isTrainer && (
+              <div className="bg-sky-300 rounded-full px-3 py-1 text-sm w-fit font-semibold text-white mt-1">
+                Trainer
+              </div>
+            )}
           </div>
           <div className="flex gap-x-2 justify-self-end self-end place-self-end">
             <p className="text-slate-500">

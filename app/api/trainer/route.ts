@@ -31,7 +31,7 @@ export async function POST(req: Request) {
       },
     });
 
-    if (trainer) {
+    if (newTrainer) {
       await db.user.update({
         where: {
           id: userId,

@@ -10,6 +10,7 @@ import {
   Layout,
   List,
   Search,
+  Share2,
   User,
   UsersRound,
 } from "lucide-react";
@@ -17,11 +18,6 @@ import {
 import { SidebarItem } from "./sidebar-item";
 
 const userRoutes = [
-  // {
-  //   icon: User,
-  //   label: "Profile",
-  //   href: "/",
-  // },
   {
     icon: Home,
     label: "Fitline",
@@ -46,6 +42,19 @@ const userRoutes = [
     icon: Bell,
     label: "Notifications",
     href: "/notifications",
+  },
+];
+
+const trainerRoutes = [
+  {
+    icon: Share2,
+    label: "Shared Trainings",
+    href: "/shared-trainings",
+  },
+  {
+    icon: UsersRound,
+    label: "Clients",
+    href: "/clients",
   },
 ];
 
@@ -94,7 +103,16 @@ export const SidebarRoutes = ({
     href: isGym ? `/gym/${username}` : `/${username}`,
   };
 
-  const routes = [profilePage, ...(isGym ? gymRoutes : userRoutes)];
+  const routes = [
+    profilePage,
+    ...(isGym
+      ? gymRoutes
+      : userRoutes),
+  ];
+
+  if (isTrainer) {
+    routes.splice(5, 0, ...trainerRoutes)
+  }
 
   return (
     <div className="flex flex-col w-full">
