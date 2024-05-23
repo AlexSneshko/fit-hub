@@ -16,6 +16,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
         {/* <main className='md:pl-56 pt-[80px] h-full'></main>  */}
         <main className="md:pl-56 pt-[80px] md:pt-0 h-full my-10">
           {children}
+          <div className="h-[80px]"/>
         </main>
       </div>
     </>

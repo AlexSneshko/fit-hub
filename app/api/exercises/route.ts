@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     }
 
     const values = await req.json();
-    
+
     values.category = { connect: { id: values.categoryId } };
     delete values.categoryId;
 
@@ -42,9 +42,9 @@ export async function GET() {
     }
 
     const exercises = await db.exercise.findMany({
-        where: {
-            userId: userId
-        }
+      where: {
+        userId: userId,
+      },
     });
 
     return NextResponse.json(exercises);

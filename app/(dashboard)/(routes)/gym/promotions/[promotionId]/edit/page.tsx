@@ -27,7 +27,7 @@ const EditPromotionPage = ({ params }: { params: { promotionId: string } }) => {
         data
       );
       router.push("/gym/promotions");
-      toast.success("Promotion created");
+      toast.success("Promotion updated");
     } catch (error) {
       toast.error("Something went wrong");
     }

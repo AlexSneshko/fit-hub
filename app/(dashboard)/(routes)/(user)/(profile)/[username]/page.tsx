@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Pencil, Plus } from "lucide-react";
-import { auth } from "@clerk/nextjs";;
+import { auth } from "@clerk/nextjs";
 import { notFound, redirect } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PostList } from "@/app/(dashboard)/_components/post/post-list";
 import { db } from "@/lib/db";
 import { Avatar } from "@/app/(dashboard)/_components/avatar";
+import { TrainingList } from "@/app/(dashboard)/_components/training/training-list";
 
 const UserProfilePage = async ({
   params,
@@ -33,6 +34,18 @@ const UserProfilePage = async ({
           createdAt: "desc",
         },
       },
+      trainings: {
+        where: {
+          isPublic: true,
+        },
+        include: {
+          exercises: {
+            include: {
+              exercise: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -52,7 +65,7 @@ const UserProfilePage = async ({
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="flex md:w-[800px]">
-        <Avatar avatarUrl={user.imageUrl} imgSize={32} />
+        <Avatar avatarUrl={user.imageUrl} imgSize={128} />
         <div className="flex flex-col justify-between ml-4">
           <div className="flex flex-col">
             <h1 className="text-xl font-bold">{user.username}</h1>
@@ -90,13 +103,15 @@ const UserProfilePage = async ({
           )}
           <TabsList>
             <TabsTrigger value="posts">Posts</TabsTrigger>
-            <TabsTrigger value="exercises">Exercises</TabsTrigger>
+            <TabsTrigger value="trainings">Trainings</TabsTrigger>
           </TabsList>
         </div>
         <TabsContent value="posts">
           <PostList data={user} />
         </TabsContent>
-        <TabsContent value="exercises">Change your password here.</TabsContent>
+        <TabsContent value="trainings">
+          <TrainingList data={user} />
+        </TabsContent>
       </Tabs>
     </div>
   );

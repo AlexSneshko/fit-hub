@@ -65,16 +65,21 @@ export const Sidebar = async () => {
       )}
       {username && (
         <>
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full h-full justify-between items-center">
             <SidebarRoutes
               username={username}
               isTrainer={isTrainer}
               isGym={isGym}
             />
+            {!isTrainer && !isGym && (
+              <Link href={"/trainer"}>
+                <Button variant="outline">Upgrade to Trainer</Button>
+              </Link>
+            )}
           </div>
           <div className="flex items-center mt-auto gap-x-2 p-5 pb-8">
             <SignOutButton>
-              <Link href="/">
+              <Link href="/sign-in">
                 <Button size="sm" variant="ghost" className="text-slate-500">
                   <LogOut className="w-4 h-4 mr-2" />
                   Exit

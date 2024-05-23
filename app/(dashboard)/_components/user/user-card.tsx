@@ -62,7 +62,7 @@ export const UserCard = ({ data }: UserCardProps) => {
   return (
     <div className="flex shadow rounded-md p-4 hover:cursor-pointer transition min-w-96">
       <Link href={`/${data.username}`}>
-        <Avatar avatarUrl={data.imageUrl} imgSize={32} />
+        <Avatar avatarUrl={data.imageUrl} imgSize={128} />
       </Link>
       <div className="flex flex-col ml-4 justify-between w-full">
         <Link href={`/${data.username}`}>

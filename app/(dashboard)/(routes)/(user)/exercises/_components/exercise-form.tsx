@@ -91,10 +91,7 @@ interface ExerciseFormProps {
   exercise?: Exercise;
 }
 
-export const ExerciseForm = ({
-  onSubmit,
-  exercise,
-}: ExerciseFormProps) => {
+export const ExerciseForm = ({ onSubmit, exercise }: ExerciseFormProps) => {
   const [categoryOptions, setCategoryOptions] = useState<Category[]>([]);
   const router = useRouter();
 
@@ -136,14 +133,15 @@ export const ExerciseForm = ({
   };
 
   useEffect(() => {
-    try {
-      axios.get("/api/categories").then((response) => {
+    axios
+      .get("/api/categories")
+      .then((response) => {
         setCategoryOptions(response.data);
+      })
+      .catch((error) => {
+        router.push("/exercises");
+        toast.error("Something went wrong");
       });
-    } catch (error) {
-      toast.error("Something went wrong");
-      router.push("/exercises");
-    }
   }, [router]);
 
   return (
@@ -319,9 +317,9 @@ export const ExerciseForm = ({
         <div className="flex items-center justify-end gap-x-2">
           {exercise && (
             // <Link href="/exercises">
-              <Button type="button" variant="destructive" onClick={onDelete}>
-                Delete
-              </Button>
+            <Button type="button" variant="destructive" onClick={onDelete}>
+              Delete
+            </Button>
             // </Link>
           )}
           <Link href="/exercises?refresh=true">
