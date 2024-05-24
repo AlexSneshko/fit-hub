@@ -1,28 +1,27 @@
 "use client";
 
-import axios from "axios";
-import Link from "next/link";
-import toast from "react-hot-toast";
-import { MouseEvent, useState } from "react";
-import { User } from "@prisma/client";
-
+import { Avatar } from "@/app/(dashboard)/_components/avatar";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@clerk/nextjs";
-import { Avatar } from "../avatar";
+import { Gym } from "@prisma/client";
+import axios from "axios";
+import Link from "next/link";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
 
-interface UserCardProps {
-  data: User;
+interface GymCardProps {
+  data: Gym;
   isUserSubscribed: boolean;
 }
 
-export const UserCard = ({ data, isUserSubscribed }: UserCardProps) => {
+export const GymCard = ({ data, isUserSubscribed }: GymCardProps) => {
   const { userId } = useAuth();
   const [isSubscribed, setIsSubscribed] = useState<boolean>(isUserSubscribed);
 
-  const onSubscribe = async (e: MouseEvent<HTMLButtonElement>) => {
+  const onSubscribe = async () => {
     try {
       const response = await axios.post(`/api/users/subscriptions`, {
-        userId: data.id,
+        gymId: data.id,
       });
       setIsSubscribed(true);
     } catch (error) {
@@ -30,7 +29,7 @@ export const UserCard = ({ data, isUserSubscribed }: UserCardProps) => {
     }
   };
 
-  const onUnsubscribe = async (e: MouseEvent<HTMLButtonElement>) => {
+  const onUnsubscribe = async () => {
     try {
       const response = await axios.delete(
         `/api/users/subscriptions/${data.id}`
@@ -41,33 +40,20 @@ export const UserCard = ({ data, isUserSubscribed }: UserCardProps) => {
     }
   };
 
-  const fullname =
-    data?.name || data?.surname ? `${data?.name} ${data?.surname}` : null;
-
   return (
     <div className="flex shadow rounded-md p-4 hover:cursor-pointer transition min-w-96">
-      <Link href={`/${data.username}`}>
+      <Link href={`/gym/${data.username}`}>
         <Avatar avatarUrl={data.imageUrl} imgSize={128} />
       </Link>
       <div className="flex flex-col ml-4 justify-between w-full">
-        <Link href={`/${data.username}`}>
+        <Link href={`/gym/${data.username}`}>
           <div>
             <h3 className="text-lg font-semibold">{data.username}</h3>
-            {fullname && <p className="text-slate-500">{fullname}</p>}
+            <p className="text-slate-500">{data.location}</p>
           </div>
         </Link>
-        <div
-          className={
-            data.isTrainer
-              ? "flex justify-between items-center"
-              : "flex justify-end"
-          }
-        >
-          {data.isTrainer && (
-            <p className="text-sky-700 font-semibold">Trainer</p>
-          )}
-          {userId &&
-            userId !== data.id &&
+        <div className="flex justify-end">
+          {userId !== data.id &&
             (!isSubscribed ? (
               <Button
                 size="sm"

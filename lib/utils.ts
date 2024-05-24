@@ -5,8 +5,8 @@ import locale from 'date-fns/locale/en-US'
 import { Gym, User } from "@prisma/client";
 
 import { AuthorWithProfileInfo } from "@/types/author";
-import { UserAuthorWithProfileInfo } from "@/types/user-author";
-import { GymAuthorWithProfileInfo } from "@/types/gym-author";
+import { UserAuthorWithProfileInfo, UserWithSubsribers } from "@/types/user-author";
+import { GymAuthorWithProfileInfo, GymWithSubscribers } from "@/types/gym-author";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -23,6 +23,10 @@ export function isAuthorGym(author: AuthorWithProfileInfo): author is GymAuthorW
 export function isUser(author: User | Gym): author is User {
   return (author as User).surname !== undefined;
 }
+
+export function isUserSubcribed(profile: UserWithSubsribers | GymWithSubscribers, targetUser: string) {
+  return profile.subscribers.some(({ subscriberId }) => subscriberId === targetUser);
+};
 
 const formatDistanceLocale = {
   lessThanXSeconds: 'just now',

@@ -17,7 +17,7 @@ export type GymAuthorWithProfileInfo = Prisma.GymGetPayload<{
     staff: {
       include: {
         user: true;
-      }
+      };
     };
   };
 }>;
@@ -56,7 +56,13 @@ export type GymAuthorWithStaff = Prisma.GymGetPayload<{
     staff: {
       include: {
         user: true;
-      }
+      };
     };
+  };
+}>;
+
+export type GymWithSubscribers = Prisma.GymGetPayload<{
+  include: {
+    subscribers: true;
   };
 }>;

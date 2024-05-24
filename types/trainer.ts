@@ -4,7 +4,11 @@ export type TrainerWithClients = Prisma.TrainerGetPayload<{
   include: {
     clients: {
       include: {
-        client: true;
+        client: {
+          include: {
+            subscribers: true;
+          };
+        };
       };
     };
   };
@@ -29,8 +33,8 @@ export type TrainingWithSharedTrainingWithUser = Prisma.TrainingGetPayload<{
   include: {
     sharedTraining: {
       include: {
-           user: true 
-      }
-    }
+        user: true;
+      };
+    };
   };
-}>
+}>;

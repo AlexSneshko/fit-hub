@@ -1,14 +1,15 @@
 "use client";
 
-import { UserCard } from "@/app/(dashboard)/_components/user/user-card";
-import { Button } from "@/components/ui/button";
-import { TrainerWithClients } from "@/types/trainer";
-import { User } from "@prisma/client";
 import axios, { AxiosError } from "axios";
 import { format } from "date-fns";
-import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import { Trash2 } from "lucide-react";
+
+import { UserCard } from "@/app/(dashboard)/_components/user/user-card";
+import { Button } from "@/components/ui/button";
+import { isUserSubcribed } from "@/lib/utils";
+import { TrainerWithClients } from "@/types/trainer";
 
 interface ClientListProps {
   data: TrainerWithClients;
@@ -38,7 +39,11 @@ export const ClientList = ({ data }: ClientListProps) => {
       {data.clients.map((client) => (
         <div className="flex gap-x-2">
           <div className="flex flex-col">
-            <UserCard key={client.clientId} data={client.client} />
+            <UserCard
+              key={client.clientId}
+              data={client.client}
+              isUserSubscribed={isUserSubcribed(client.client, data.userId)}
+            />
             <span className="block text-sm text-gray-600">
               Your client since: {format(new Date(client.createdAt), "PPP")}
             </span>

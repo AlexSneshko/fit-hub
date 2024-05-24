@@ -37,12 +37,7 @@ const userRoutes = [
     icon: Dumbbell,
     label: "Exercises",
     href: "/exercises",
-  },
-  {
-    icon: Bell,
-    label: "Notifications",
-    href: "/notifications",
-  },
+  }
 ];
 
 const trainerRoutes = [

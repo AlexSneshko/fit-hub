@@ -11,10 +11,47 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { userId: targetUserId } = await req.json();
+    const { userId: targetUserId, gymId: targetGymId } = await req.json();
 
-    if (!targetUserId) {
-      return new NextResponse("Invalid exercise id", { status: 400 });
+    if (!targetUserId && !targetGymId) {
+      return new NextResponse("Invalid target id", { status: 400 });
+    }
+
+    if (targetGymId) {
+      const existingGymSubscription = await db.subscription.findFirst({
+        where: {
+          subscriber: {
+            id: subscriberId,
+          },
+          targetGym: {
+            id: targetGymId,
+          },
+        },
+      });
+
+      console.log(existingGymSubscription)
+
+      if (existingGymSubscription) {
+        return new NextResponse("Already subscribed", { status: 400 });
+      }
+  
+      const gymSubscription = await db.subscription.create({
+        data: {
+          subscriptionType: ProfileType.GYM,
+          subscriber: {
+            connect: {
+              id: subscriberId,
+            },
+          },
+          targetGym: {
+            connect: {
+              id: targetGymId as string,
+            },
+          },
+        },
+      });
+
+      return NextResponse.json(gymSubscription);
     }
 
     if (subscriberId === targetUserId) {
@@ -51,6 +88,7 @@ export async function POST(req: Request) {
         },
       },
     });
+
     return NextResponse.json(subscription);
   } catch (error) {
     console.log("[USER_ID]", error);

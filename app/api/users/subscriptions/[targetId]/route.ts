@@ -51,11 +51,37 @@ export async function DELETE(
       return new NextResponse("Invalid target id", { status: 400 });
     }
 
+    const targetGym = await db.gym.findUnique({
+      where: {
+        id: params.targetId,
+      },
+    });
+
+    if (targetGym) {
+      const gymSubscribtion = await db.subscription.findFirst({
+        where: {
+          subscriberId: userId,
+          targetGymId: params.targetId as string,
+        },
+      });
+
+      if (!gymSubscribtion) {
+        return new NextResponse("Subscription not found", { status: 404 });
+      }
+  
+      const deletedGymSubscribtion = await db.subscription.delete({
+        where: {
+          id: gymSubscribtion.id,
+        },
+      });
+  
+      return NextResponse.json(deletedGymSubscribtion);
+    }
+
     const subscribtion = await db.subscription.findFirst({
       where: {
         subscriberId: userId,
         targetUserId: params.targetId as string,
-        targetGymId: null,
       },
     });
 
@@ -71,7 +97,7 @@ export async function DELETE(
 
     return NextResponse.json(deletedSubscribtion);
   } catch (error) {
-    console.log("[SUBSCRIPTIONS]", error);
+    console.log("[SUBSCRIPTION_ID]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

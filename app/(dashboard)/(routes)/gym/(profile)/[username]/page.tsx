@@ -108,7 +108,6 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
           </TabsList>
         </div>
         <TabsContent value="posts">
-          Posts
           <PostList data={gymWithInfo.posts} />
         </TabsContent>
         <TabsContent value="trainers">Trainers</TabsContent>

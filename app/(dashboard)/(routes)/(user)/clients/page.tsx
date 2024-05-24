@@ -23,7 +23,11 @@ const ClientsPage = async () => {
     include: {
       clients: {
         include: {
-          client: true,
+          client: {
+            include: {
+              subscribers: true,
+            },
+          },
         },
       },
     },
