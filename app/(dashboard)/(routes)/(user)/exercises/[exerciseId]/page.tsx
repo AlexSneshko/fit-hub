@@ -22,22 +22,26 @@ const ExerciseIdPage = ({
 
   useEffect(() => {
     axios
-    .get(`/api/exercises/${params.exerciseId}`)
-    .then((response) => {
-      setExercise(response.data);
-    })
-    .catch((error) => {
-      toast.error(error);
-      router.push("/exercises?refresh=true");
-    });
+      .get(`/api/exercises/${params.exerciseId}`)
+      .then((response) => {
+        setExercise(response.data);
+      })
+      .catch((error) => {
+        toast.error(error);
+        router.push("/exercises");
+        router.refresh();
+      });
   }, [params.exerciseId, router]);
-  
+
   if (!exercise) return <div>Loading...</div>;
-  
+
   const onSubmitEdit = async (values: z.infer<typeof exerciseFormSchema>) => {
-    console.log('values');
+    console.log("values");
     try {
-      const response = await axios.patch(`/api/exercises/${exercise.id}`, values);
+      const response = await axios.patch(
+        `/api/exercises/${exercise.id}`,
+        values
+      );
       router.push(`/exercises/${response.data.id}`);
       toast.success("Exercise edited");
     } catch (error) {
@@ -46,11 +50,9 @@ const ExerciseIdPage = ({
   };
 
   return (
-    <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full mt-20 pb-20 px-6">
-      <div>
-        <h1 className="text-2xl">Exercise editing</h1>
-        <ExerciseForm onSubmit={onSubmitEdit} exercise={exercise} />
-      </div>
+    <div className="w-2/3 mx-auto md:flex md:items-center md:justify-center md:mt-20">
+      <h1 className="text-2xl">Exercise editing</h1>
+      <ExerciseForm onSubmit={onSubmitEdit} exercise={exercise} />
     </div>
   );
 };

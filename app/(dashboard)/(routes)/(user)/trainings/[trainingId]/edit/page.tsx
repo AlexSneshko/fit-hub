@@ -88,8 +88,8 @@ const EditTrainingPage = ({ params }: { params: { trainingId: string } }) => {
 
   return (
     <div className="mx-auto w-2/3">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-semibold">Edit Promotion</h1>
+      <div className="md:flex items-center justify-between mb-8">
+        <h1 className="md:text-2xl font-semibold md:mb-0 mb-4">Edit Training</h1>
         <div className="flex gap-x-4">
         <Link href="/trainings?refresh=true">
             <Button type="button" variant="outline">

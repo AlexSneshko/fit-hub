@@ -147,7 +147,7 @@ export const ExerciseForm = ({ onSubmit, exercise }: ExerciseFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="title"
@@ -228,7 +228,7 @@ export const ExerciseForm = ({ onSubmit, exercise }: ExerciseFormProps) => {
             )}
           />
         </div>
-        <div className="flex gap-x-6">
+        <div className="md:flex gap-x-6">
           <FormField
             control={form.control}
             name="weight"

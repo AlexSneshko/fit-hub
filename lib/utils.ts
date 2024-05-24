@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { formatDistanceToNowStrict } from 'date-fns'
 import locale from 'date-fns/locale/en-US'
+import { Gym, User } from "@prisma/client";
 
 import { AuthorWithProfileInfo } from "@/types/author";
 import { UserAuthorWithProfileInfo } from "@/types/user-author";
@@ -12,11 +13,15 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function isAuthorUser(author: AuthorWithProfileInfo): author is UserAuthorWithProfileInfo {
-  return (author as UserAuthorWithProfileInfo).exercises !== null;
+  return (author as UserAuthorWithProfileInfo).surname !== null;
 }
 
 export function isAuthorGym(author: AuthorWithProfileInfo): author is GymAuthorWithProfileInfo {
   return (author as GymAuthorWithProfileInfo).gymOpenTime !== null;
+}
+
+export function isUser(author: User | Gym): author is User {
+  return (author as User).surname !== undefined;
 }
 
 const formatDistanceLocale = {

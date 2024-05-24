@@ -29,6 +29,8 @@ const UserProfilePage = async ({
         include: {
           likes: true,
           comments: true,
+          authorUser: true,
+          authorGym: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -64,30 +66,30 @@ const UserProfilePage = async ({
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="flex md:w-[800px]">
+      <div className="flex flex-col items-center md:items-stretch md:flex-row md:w-2/3">
         <Avatar avatarUrl={user.imageUrl} imgSize={128} />
-        <div className="flex flex-col justify-between ml-4">
-          <div className="flex flex-col">
+        <div className="flex flex-col justify-between md:ml-4 my-4 md:my-0">
+          <div className="flex flex-col items-center md:items-baseline">
             <h1 className="text-xl font-bold">{user.username}</h1>
             {fullname && <p className="text-slate-500">{fullname}</p>}
             {user.isTrainer && (
-              <div className="bg-sky-300 rounded-full px-3 py-1 text-sm w-fit font-semibold text-white mt-1">
+              <div className="bg-sky-300 rounded-full md:px-3 md:py-1 px-2 py-1 text-sm w-fit font-semibold text-white mt-1">
                 Trainer
               </div>
             )}
           </div>
-          <div className="flex gap-x-2 justify-self-end self-end place-self-end">
-            <p className="text-slate-500">
-              Subscribtions: {user.subscriptions.length}
-            </p>
-            <p className="text-slate-500">
+          <div className="flex gap-x-2 justify-self-end self-end place-self-end mt-2 md:mt-0">
+            <p className="text-slate-500 md:text-base text-sm">
               Subscribers: {user.subscribers.length}
+            </p>
+            <p className="text-slate-500 md:text-base text-sm">
+              Subscribtions: {user.subscriptions.length}
             </p>
           </div>
         </div>
         {isOwner && (
           <Link href={`/${user.username}/edit`}>
-            <Button variant="outline">
+            <Button size={"sm"} variant="outline">
               <Pencil className="w-4 h-4 mr-2" /> Edit
             </Button>
           </Link>
@@ -112,7 +114,7 @@ const UserProfilePage = async ({
           </TabsList>
         </div>
         <TabsContent value="posts">
-          <PostList data={user} />
+          <PostList data={user.posts} />
         </TabsContent>
         <TabsContent value="trainings">
           <TrainingList data={user.trainings} />

@@ -21,7 +21,7 @@ const CreateExercisePage = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full mt-20 pb-20 px-6">
+    <div className="w-2/3 mx-auto flex md:items-center md:justify-center">
       <div>
         <h1 className="text-2xl">Create your exercise</h1>
         <p className="text-sm text-slate-600">

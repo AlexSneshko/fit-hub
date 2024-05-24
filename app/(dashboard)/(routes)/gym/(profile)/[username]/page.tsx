@@ -27,6 +27,8 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
         include: {
           likes: true,
           comments: true,
+          authorUser: true,
+          authorGym: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -107,7 +109,7 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
         </div>
         <TabsContent value="posts">
           Posts
-          <PostList data={gymWithInfo} />
+          <PostList data={gymWithInfo.posts} />
         </TabsContent>
         <TabsContent value="trainers">Trainers</TabsContent>
         <TabsContent value="promotions">
