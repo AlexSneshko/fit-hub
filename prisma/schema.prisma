@@ -127,7 +127,6 @@ model Category {
 }
 
 model SharedTraining {
-  id         String @id @default(uuid())
   trainerId  String
   userId     String
   trainingId String
@@ -136,6 +135,7 @@ model SharedTraining {
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   training Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
 
+  @@id([userId, trainingId])
   @@index([userId])
   @@index([trainingId])
   @@index([trainerId])

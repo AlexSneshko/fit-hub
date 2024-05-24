@@ -15,6 +15,13 @@ export async function POST(req: Request) {
       where: {
         userId: userId,
       },
+      include: {
+        sharedTrainings: {
+          include: {
+            user: true
+          }
+        }
+      },
     });
 
     if (trainer) {

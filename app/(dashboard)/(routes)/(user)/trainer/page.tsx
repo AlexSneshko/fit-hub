@@ -11,7 +11,7 @@ const CreateTrainerPage = () => {
 
   const onUpgradeClick = async () => {
     try {
-      const response = await axios.post("/api/trainer");
+      const response = await axios.post("/api/trainers");
       router.push("/shared-trainings");
       toast.success(
         "You are upgraded to trainer, now you can share trainings!!🎉"

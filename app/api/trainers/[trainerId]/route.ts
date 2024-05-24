@@ -1,6 +1,5 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
-import { getRandomValues } from "crypto";
 import { NextResponse } from "next/server";
 
 export async function POST(
@@ -53,6 +52,43 @@ export async function POST(
         },
       },
     });
+
+    return NextResponse.json(trainer);
+  } catch (error) {
+    console.log("[TRAINER_ID]", error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+
+export async function GET(req: Request, { params }: { params: { trainerId: string } }) {
+  try {
+    const { userId } = auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const trainer = await db.trainer.findUnique({
+      where: {
+        userId: params.trainerId
+      },
+      include: {
+        clients: {
+          include: {
+            client: true
+          }
+        },
+        user: {
+          include: {
+            trainings: true
+          }
+        }
+      }
+    });
+
+    if (!trainer) {
+      return new NextResponse("Trainer not found", { status: 404 });
+    }
 
     return NextResponse.json(trainer);
   } catch (error) {

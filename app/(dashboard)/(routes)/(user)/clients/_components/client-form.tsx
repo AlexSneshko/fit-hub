@@ -57,7 +57,8 @@ export const ClientForm = ({ onSubmit }: ClientFormProps) => {
         setUsersOptions(users.filter((user) => user.id !== userId));
       })
       .catch((error) => {
-        router.push("/clients?refresh=true");
+        router.push("/clients");
+        router.refresh()
         toast.error("Something went wrong");
       });
   }, []);

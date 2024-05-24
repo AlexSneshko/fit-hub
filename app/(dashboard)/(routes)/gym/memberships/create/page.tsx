@@ -12,7 +12,8 @@ const CreateMembershipPage = () => {
     const onSubmit = async (data: z.infer<typeof membershipFormSchema>) => {
       try {
         const response = await axios.post("/api/memberships", data);
-        router.push("/gym/memberships?refresh=true");
+        router.push("/gym/memberships");
+        router.refresh()
         toast.success("Memberships created");
       } catch (error) {
         toast.error("Something went wrong");

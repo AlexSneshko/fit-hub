@@ -12,7 +12,8 @@ const CreateStaffPage = () => {
   const onSubmit = async (data: z.infer<typeof staffFormSchema>) => {
     try {
       const response = await axios.post("/api/staff", data);
-      router.push("/gym/staff?refresh=true");
+      router.push("/gym/staff");
+      router.refresh()
       toast.success("Staff created");
     } catch (error) {
       if (error instanceof AxiosError) {

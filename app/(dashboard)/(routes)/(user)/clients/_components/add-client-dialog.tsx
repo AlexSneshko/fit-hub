@@ -16,6 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ClientForm, clientFormSchema } from "./client-form";
+import { useState } from "react";
 
 interface AddClientDialogProps {
   trainerId: string;
@@ -23,11 +24,13 @@ interface AddClientDialogProps {
 
 export const AddClientDialog = ({ trainerId }: AddClientDialogProps) => {
   const router = useRouter();
+  const [openDialog, setOpenDialog] = useState(false);
 
   const onSubmit = async (data: z.infer<typeof clientFormSchema>) => {
     try {
-      const response = await axios.post(`/api/trainer/${trainerId}`, data);
-      router.push("/clients?refresh=true");
+      const response = await axios.post(`/api/trainers/${trainerId}`, data);
+      setOpenDialog(false)
+      router.refresh()
       toast.success("Client created");
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -39,7 +42,7 @@ export const AddClientDialog = ({ trainerId }: AddClientDialogProps) => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger asChild>
         <Button variant="outline">
           <Plus className="w-4 h-4 mr-2" /> Client

@@ -34,7 +34,8 @@ const EditStaffPage = ({ params }: { params: { staffId: string } }) => {
   const onDelete = async () => {
     try {
       const response = await axios.delete(`/api/staff/${params.staffId}`);
-      router.push("/gym/staff?refresh=true");
+      router.push("/gym/staff");
+      router.refresh()
       toast.success("Staff deleted");
     } catch (error) {
       toast.error("Something went wrong");

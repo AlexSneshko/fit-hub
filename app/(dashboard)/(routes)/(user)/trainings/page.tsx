@@ -1,5 +1,6 @@
 import { TrainingList } from "@/app/(dashboard)/_components/training/training-list";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/lib/db";
 import { UserAuthorWithTrainings } from "@/types/user-author";
 import { auth } from "@clerk/nextjs";
@@ -23,17 +24,34 @@ const TrainingsPage = async () => {
         include: {
           exercises: {
             include: {
-              exercise: true
-            }
-          }
-        }
-      }
-    }
+              exercise: true,
+            },
+          },
+        },
+      },
+      sharedTrainings: {
+        include: {
+          training: {
+            include: {
+              exercises: {
+                include: {
+                  exercise: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   });
 
   if (!userWithTrainings) {
     redirect("/");
   }
+
+  const sharedTrainings = userWithTrainings.sharedTrainings.map(
+    ({ training }) => training
+  );
 
   return (
     <div className="px-6">
@@ -45,8 +63,21 @@ const TrainingsPage = async () => {
           </Button>
         </Link>
       </div>
-
-      <TrainingList data={userWithTrainings} />
+      <Tabs
+        defaultValue="trainings"
+        className="flex flex-col items-center justify-center mt-6"
+      >
+        <TabsList>
+          <TabsTrigger value="trainings">My trainings</TabsTrigger>
+          <TabsTrigger value="sharedTrainings">Shared trainings</TabsTrigger>
+        </TabsList>
+        <TabsContent value="trainings">
+          <TrainingList data={userWithTrainings.trainings} />
+        </TabsContent>
+        <TabsContent value="sharedTrainings">
+          <TrainingList data={sharedTrainings} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

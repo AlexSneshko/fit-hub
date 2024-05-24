@@ -126,7 +126,8 @@ export const ExerciseForm = ({ onSubmit, exercise }: ExerciseFormProps) => {
     try {
       await axios.delete(`/api/exercises/${exercise?.id}`);
       toast.success(`Exercise "${exercise?.title}" deleted`);
-      router.push("/exercises?refresh=true");
+      router.push("/exercises");
+      router.refresh()
     } catch (error) {
       toast.error("Something went wrong");
     }

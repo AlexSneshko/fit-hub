@@ -21,6 +21,7 @@ const CreatePage = () => {
     try {
       const response = await axios.post("/api/users", values);
       router.push(`/${response.data.username}`);
+      router.refresh()
       toast.success("Profile created");
     } catch (error) {
       toast.error("Failed to create profile");
@@ -28,7 +29,7 @@ const CreatePage = () => {
   };
 
   return (
-    <div className="mx-auto md:px-96">
+    <div className="mx-auto w-2/3">
       <h1 className="text-center text-2xl">Create your profile</h1>
       <UserForm onSubmit={onSubmit} />
     </div>

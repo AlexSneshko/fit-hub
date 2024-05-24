@@ -74,7 +74,8 @@ export const ExerciseInTrainingForm = ({
         setExercisesOptions(res.data);
       })
       .catch((error) => {
-        router.push("/trainings?refresh=true");
+        router.push("/trainings");
+        router.refresh()
         toast.error("Something went wrong");
       });
   }, []);

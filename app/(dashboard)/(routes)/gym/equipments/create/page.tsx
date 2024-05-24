@@ -16,7 +16,8 @@ const CreateEquipmentPage = () => {
   const onSubmit = async (data: z.infer<typeof equipmentFormSchema>) => {
     try {
       const response = await axios.post("/api/equipments", data);
-      router.push("/gym/equipments?refresh=true");
+      router.push("/gym/equipments");
+      router.refresh()
       toast.success("Equipment created");
     } catch (error) {
       toast.error("Something went wrong");

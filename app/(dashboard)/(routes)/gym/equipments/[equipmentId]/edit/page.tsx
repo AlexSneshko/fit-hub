@@ -35,7 +35,8 @@ const EditEquipmentage = ({ params }: { params: { equipmentId: string } }) => {
       const response = await axios.delete(
         `/api/equipments/${params.equipmentId}`
       );
-      router.push("/gym/equipments?refresh=true");
+      router.push("/gym/equipments");
+      router.refresh()
       toast.success("Equipment deleted");
     } catch (error) {
       toast.error("Something went wrong");

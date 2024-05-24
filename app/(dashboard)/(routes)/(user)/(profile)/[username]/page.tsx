@@ -115,7 +115,7 @@ const UserProfilePage = async ({
           <PostList data={user} />
         </TabsContent>
         <TabsContent value="trainings">
-          <TrainingList data={user} />
+          <TrainingList data={user.trainings} />
         </TabsContent>
       </Tabs>
     </div>
