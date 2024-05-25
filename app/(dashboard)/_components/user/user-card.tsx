@@ -45,7 +45,7 @@ export const UserCard = ({ data, isUserSubscribed }: UserCardProps) => {
     data?.name || data?.surname ? `${data?.name} ${data?.surname}` : null;
 
   return (
-    <div className="flex shadow rounded-md p-4 hover:cursor-pointer transition min-w-96">
+    <div className="flex shadow rounded-md p-4 hover:cursor-pointer transition min-w-80 md:min-w-96">
       <Link href={`/${data.username}`}>
         <Avatar avatarUrl={data.imageUrl} imgSize={128} />
       </Link>

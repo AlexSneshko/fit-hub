@@ -61,6 +61,7 @@ export async function PATCH(
         ...values,
       },
     });
+    
     return NextResponse.json(exercise);
   } catch (error) {
     console.log("[EXERCISE_ID]", error);

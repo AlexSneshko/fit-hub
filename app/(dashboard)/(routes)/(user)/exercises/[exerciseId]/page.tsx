@@ -36,13 +36,13 @@ const ExerciseIdPage = ({
   if (!exercise) return <div>Loading...</div>;
 
   const onSubmitEdit = async (values: z.infer<typeof exerciseFormSchema>) => {
-    console.log("values");
     try {
       const response = await axios.patch(
         `/api/exercises/${exercise.id}`,
         values
       );
-      router.push(`/exercises/${response.data.id}`);
+      router.push(`/exercises`);
+      router.refresh()
       toast.success("Exercise edited");
     } catch (error) {
       toast.error("Something went wrong");
@@ -50,7 +50,7 @@ const ExerciseIdPage = ({
   };
 
   return (
-    <div className="w-2/3 mx-auto md:flex md:items-center md:justify-center md:mt-20">
+    <div className="w-2/3 mx-auto flex flex-col items-center justify-center md:mt-20">
       <h1 className="text-2xl">Exercise editing</h1>
       <ExerciseForm onSubmit={onSubmitEdit} exercise={exercise} />
     </div>

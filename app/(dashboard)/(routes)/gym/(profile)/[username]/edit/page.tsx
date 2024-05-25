@@ -8,18 +8,56 @@ import { toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { Gym } from "@prisma/client";
 import { useAuth } from "@clerk/nextjs";
+import {
+  GymOpenTimeForm,
+  gymOpenTimeFormSchema,
+} from "../../_components/gym-open-time-form";
+import { GymWithOpenTime } from "@/types/gym";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const EditUserPage = ({ params }: { params: { username: string } }) => {
+const EditGymPage = ({ params }: { params: { username: string } }) => {
   const router = useRouter();
-  const { userId } = useAuth()
+  const { userId } = useAuth();
 
-  const [gym, setGym] = useState<Gym>();
-  const [isEditingImage, setIsEditingImage] = useState(false);
+  const [gym, setGym] = useState<GymWithOpenTime>();
 
   const onEdit = async (values: z.infer<typeof gymFormSchema>) => {
     try {
       const response = await axios.patch(`/api/gyms/${userId}`, values);
       router.push(`/gym/${params.username}`);
+      router.refresh();
+      toast.success("Gym updated");
+    } catch (error) {
+      toast.error("Failed to update gym");
+    }
+  };
+
+  const onGymOpenTimeEdit = async (
+    values: z.infer<typeof gymOpenTimeFormSchema>
+  ) => {
+    try {
+      const response = await axios.patch(
+        `/api/gyms/${userId}/gym-open-time`,
+        values
+      );
+      router.push(`/gym/${params.username}`);
+      router.refresh();
+      toast.success("Gym updated");
+    } catch (error) {
+      toast.error("Failed to update gym");
+    }
+  };
+
+  const onGymOpenTimeCreate = async (
+    values: z.infer<typeof gymOpenTimeFormSchema>
+  ) => {
+    try {
+      const response = await axios.post(
+        `/api/gyms/${userId}/gym-open-time`,
+        values
+      );
+      router.push(`/gym/${params.username}`);
+      router.refresh();
       toast.success("Gym updated");
     } catch (error) {
       toast.error("Failed to update gym");
@@ -36,7 +74,7 @@ const EditUserPage = ({ params }: { params: { username: string } }) => {
         setGym(res.data);
       })
       .catch(() => {
-        router.push(`/${params.username}`);
+        router.push(`/gym/${params.username}`);
       });
   }, [params.username, router]);
 
@@ -46,40 +84,31 @@ const EditUserPage = ({ params }: { params: { username: string } }) => {
 
   return (
     <div className="mx-auto w-2/3">
-        {/* {!isEditingImage &&
-          (!gym.imageUrl ? (
-            <div className="flex items-center justify-center h-32 w-32 bg-slate-200 rounded-full">
-              <ImageIcon className="h-10 w-10 text-slate-500" />
-            </div>
-          ) : (
-            <div className="relative aspect-video mt-2">
-              <Image
-                alt="Upload"
-                width={128}
-                height={128}
-                className="rounded-full h-32 w-32"
-                src={gym.imageUrl}
-              />
-            </div>
-          ))}
-        {isEditingImage && (
-          <div className="aspect-video mt-2 h-[244px] mb-10 mx-auto">
-            <FileUpload
-              endpoint="imageUploader"
-              onChange={(url) => {
-                if (url) {
-                  onEditImage({ imageUrl: url });
-                }
-              }}
+      <h1 className="text-2xl">Gym editing</h1>
+      <Tabs
+        defaultValue="gym"
+        className="flex flex-col"
+      >
+        <TabsList className="mb-4 self-center">
+          <TabsTrigger value="gym">Gym</TabsTrigger>
+          <TabsTrigger value="open-time">Open time</TabsTrigger>
+        </TabsList>
+        <TabsContent value="gym">
+          <GymForm onSubmit={onEdit} gym={gym} />
+        </TabsContent>
+        <TabsContent value="open-time">
+          {gym.gymOpenTime ? (
+            <GymOpenTimeForm
+              onSubmit={onGymOpenTimeEdit}
+              gymOpenTime={gym.gymOpenTime}
             />
-            <div className="text-xs text-muted-foreground mt-4">
-              1:1 aspect ratio recommended
-            </div>
-          </div>
-        )} */}
-      <GymForm onSubmit={onEdit} gym={gym}/>
+          ) : (
+            <GymOpenTimeForm onSubmit={onGymOpenTimeCreate} />
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
 
-export default EditUserPage;
+export default EditGymPage;

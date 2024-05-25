@@ -224,8 +224,7 @@ model Subscription {
 }
 
 model GymOpenTime {
-  id            String  @id @default(uuid())
-  gymId         String  @unique
+  gymId         String  @id
   weekDayOpen   String?
   weekDayClose  String?
   saturdayOpen  String?

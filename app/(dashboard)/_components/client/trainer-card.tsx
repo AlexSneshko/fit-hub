@@ -19,7 +19,7 @@ export const TrainerCard = ({ data }: TrainerCardProps) => {
       ? `${data.user.name} ${data.user.surname}`
       : null;
 
-  const gymRelashionShip = data.gymsRelationShips.find((gym) => gym.gymId === userId);
+  const gymRelashionShip = data.gymsRelationShips.find((gym) => gym.trainerId === data.userId);
 
   return (
     <div className="shadow rounded-md p-4 hover:cursor-pointer transition min-w-96">

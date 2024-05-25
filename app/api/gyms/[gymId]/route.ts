@@ -44,6 +44,9 @@ export async function GET(req: Request, { params }: { params: { gymId: string } 
       where: {
         id: params.gymId,
       },
+      include: {
+        gymOpenTime: true
+      },
     });
     
     return NextResponse.json(gym);

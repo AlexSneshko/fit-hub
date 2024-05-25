@@ -4,12 +4,7 @@ export type GymAuthorWithProfileInfo = Prisma.GymGetPayload<{
   include: {
     subscribers: true;
     gymOpenTime: true;
-    posts: {
-      include: {
-        likes: true;
-        comments: true;
-      };
-    };
+    posts: true;
     trainers: true;
     gymMemberships: true;
     equipment: true;
@@ -24,12 +19,7 @@ export type GymAuthorWithProfileInfo = Prisma.GymGetPayload<{
 
 export type GymAuthorWithPosts = Prisma.GymGetPayload<{
   include: {
-    posts: {
-      include: {
-        likes: true;
-        comments: true;
-      };
-    };
+    posts: true;
   };
 }>;
 

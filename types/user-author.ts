@@ -4,12 +4,7 @@ export type UserAuthorWithProfileInfo = Prisma.UserGetPayload<{
   include: {
     subscriptions: true;
     subscribers: true;
-    posts: {
-      include: {
-        likes: true;
-        comments: true;
-      };
-    };
+    posts: true;
     trainings: {
       include: {
         exercises: {

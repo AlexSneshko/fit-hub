@@ -26,8 +26,6 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
       gymOpenTime: true,
       posts: {
         include: {
-          likes: true,
-          comments: true,
           authorUser: true,
           authorGym: true,
         },
@@ -40,7 +38,7 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
           trainer: {
             include: {
               user: true,
-              gymsRelationShips: true
+              gymsRelationShips: true,
             },
           },
         },
@@ -53,9 +51,9 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
         },
       },
       staff: {
-        include:{
-          user: true
-        }
+        include: {
+          user: true,
+        },
       },
     },
   });
@@ -77,28 +75,56 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="flex md:w-[800px]">
-        <Avatar avatarUrl={gymWithInfo.imageUrl} imgSize={128} />
-        <div className="flex flex-col justify-between ml-4">
-          <div className="flex flex-col">
-            <h1 className="text-xl font-bold">{gymWithInfo.username}</h1>
-            <p className="text-slate-500">{gymWithInfo.name}</p>
-          </div>
-          <div className="flex gap-x-2 justify-self-end self-end place-self-end">
-            <p className="text-slate-500">
-              Subscribers: {gymWithInfo.subscribers.length}
-            </p>
+      <div className="flex flex-col sm:flex-row items-center sm:items-stretch sm:justify-start md:w-2/3 px-5">
+        <div className="flex">
+          <Avatar avatarUrl={gymWithInfo.imageUrl} imgSize={128} />
+          <div className="flex flex-col justify-between ml-4">
+            <div className="flex flex-col">
+              <h1 className="text-xl font-bold">{gymWithInfo.username}</h1>
+              <p className="text-slate-500">{gymWithInfo.name}</p>
+              <p className="text-slate-500">{gymWithInfo.location}</p>
+            </div>
+            <div className="flex gap-x-2 justify-self-end self-end place-self-end">
+              <p className="text-slate-500">
+                Subscribers: {gymWithInfo.subscribers.length}
+              </p>
+            </div>
           </div>
         </div>
+        {gymWithInfo.gymOpenTime && (
+          <div className="py-2 px-4 ml-auto shadow-inner bg-slate-100 rounded my-4 sm:my-0">
+            <p className="font-semibold text-center mb-4">Open Time</p>
+            <div className="flex w-full justify-between gap-x-2">
+              <div>
+                <p>Weekday:</p>
+                <p>Saturday:</p>
+                <p>Sunday:</p>
+              </div>
+              <div className="flex flex-col  text-right">
+                <p>
+                  {gymWithInfo.gymOpenTime.weekDayOpen} -{" "}
+                  {gymWithInfo.gymOpenTime.weekDayClose}
+                </p>
+                <p>
+                  {gymWithInfo.gymOpenTime.saturdayOpen} -{" "}
+                  {gymWithInfo.gymOpenTime.saturdayClose}
+                </p>
+                <p>
+                  {gymWithInfo.gymOpenTime.sundayOpen} -{" "}
+                  {gymWithInfo.gymOpenTime.sundayClose}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
         {isOwner && (
-          <Link href={`/gym/${gymWithInfo.username}/edit`}>
+          <Link href={`/gym/${gymWithInfo.username}/edit`} className="ml-auto">
             <Button variant="outline">
               <Pencil className="w-4 h-4 mr-2" /> Edit
             </Button>
           </Link>
         )}
       </div>
-      {/* <UserButton afterSignOutUrl="/" /> */}
       <Tabs
         defaultValue="posts"
         className="flex flex-col items-center justify-center mt-6"

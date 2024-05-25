@@ -42,7 +42,7 @@ interface GymrofileFormProps {
 
 export const GymForm = ({ onSubmit, gym }: GymrofileFormProps) => {
   const [imageUrl, setImageUrl] = useState(gym?.imageUrl);
-  const [editingImage, setEditingImage] = useState(false);
+  const [previewImage, setPreviewImage] = useState(!!gym?.imageUrl);
 
   const form = useForm<z.infer<typeof gymFormSchema>>({
     resolver: zodResolver(gymFormSchema),
@@ -66,8 +66,8 @@ export const GymForm = ({ onSubmit, gym }: GymrofileFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-8 w-full">
-      {!editingImage && (
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      {!previewImage && (
           <>
             <FormField
               control={form.control}
@@ -83,14 +83,14 @@ export const GymForm = ({ onSubmit, gym }: GymrofileFormProps) => {
                           if (url) {
                             form.setValue("imageUrl", url);
                             setImageUrl(url);
-                            setEditingImage(true);
+                            setPreviewImage(true);
                           }
                         }}
                       />
                       {imageUrl && (
                         <Button
                           variant="outline"
-                          onClick={() => setEditingImage(true)}
+                          onClick={() => setPreviewImage(true)}
                           className="mt-2"
                         >
                           <Pencil className="w-4 h-4 mr-2" /> Cancel
@@ -105,14 +105,14 @@ export const GymForm = ({ onSubmit, gym }: GymrofileFormProps) => {
             />
           </>
         )}
-        {editingImage && imageUrl && (
+        {previewImage && imageUrl && (
           <div>
             <h3 className="text-sm mb-0 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               Image Preview
             </h3>
             <div className="flex gap-x-4 mt-2 justify-center">
               <Avatar avatarUrl={imageUrl} imgSize={128}/>
-              <Button variant="outline" onClick={() => setEditingImage(false)}>
+              <Button variant="outline" onClick={() => setPreviewImage(false)}>
                 <Pencil className="w-4 h-4 mr-2" /> Edit
               </Button>
             </div>
@@ -174,13 +174,6 @@ export const GymForm = ({ onSubmit, gym }: GymrofileFormProps) => {
         />
 
         <div className="flex items-center justify-end gap-x-2">
-          {/* {user && (
-            // <Link href="/exercises">
-              <Button type="button" variant="destructive" onClick={onDelete}>
-                Delete
-              </Button>
-            // </Link>
-          )} */}
           {gym && (
             <Link href={`/gym/${gym?.username}`}>
               <Button type="button" variant="ghost">

@@ -27,8 +27,6 @@ const UserProfilePage = async ({
       exercises: true,
       posts: {
         include: {
-          likes: true,
-          comments: true,
           authorUser: true,
           authorGym: true,
         },
