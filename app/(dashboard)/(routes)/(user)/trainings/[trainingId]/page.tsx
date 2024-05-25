@@ -33,8 +33,8 @@ const TrainingIdPage = async ({
 
   return (
     <div className="container mx-auto p-6">
-      <div className="flex ">
-        <h1 className="text-3xl font-bold mb-4 text-center">
+      <div className="flex">
+        <h1 className="text-3xl font-semibold mb-4 text-center">
           {training.title}
         </h1>
         {isOwner && (
@@ -50,7 +50,6 @@ const TrainingIdPage = async ({
           {training.description}
         </p>
       )}
-      Í
       <div className="flex flex-wrap justify-between items-center text-gray-600 mb-4">
         {training.duration && (
           <span className="mr-4">Duration: {training.duration}</span>
@@ -65,7 +64,7 @@ const TrainingIdPage = async ({
           <Link
             href={`/exercises/${exerciseInTraining.exercise.id}`}
             key={exerciseInTraining.exercise.id}
-            className="md:justify-self-center w-full  sm:max-w-[250px]"
+            className="md:justify-self-center w-full sm:max-w-[250px]"
           >
             <div
               key={exerciseInTraining.exercise.id}
@@ -103,7 +102,6 @@ const TrainingIdPage = async ({
             </div>
           </Link>
         ))}
-        {/* </div> */}
       </div>
     </div>
   );

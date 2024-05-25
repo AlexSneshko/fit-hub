@@ -1,58 +1,57 @@
-"use client";
+import { Button } from "@/components/ui/button";
+import { db } from "@/lib/db";
+import { auth } from "@clerk/nextjs";
+import { Pencil } from "lucide-react";
+import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
 
-import { z } from "zod";
-import axios from "axios";
-import { toast } from "react-hot-toast";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Exercise } from "@prisma/client";
-
-import { ExerciseForm, exerciseFormSchema } from "../_components/exercise-form";
-
-const ExerciseIdPage = ({
+const ExerciseIdPage = async ({
   params,
 }: {
   params: {
     exerciseId: string;
   };
 }) => {
-  const [exercise, setExercise] = useState<Exercise>();
+  const { userId } = auth();
 
-  const router = useRouter();
+  if (!userId) {
+    redirect("/sign-in");
+  }
 
-  useEffect(() => {
-    axios
-      .get(`/api/exercises/${params.exerciseId}`)
-      .then((response) => {
-        setExercise(response.data);
-      })
-      .catch((error) => {
-        toast.error(error);
-        router.push("/exercises");
-        router.refresh();
-      });
-  }, [params.exerciseId, router]);
+  const exercise = await db.exercise.findUnique({
+    where: {
+      id: params.exerciseId,
+    },
+  });
 
-  if (!exercise) return <div>Loading...</div>;
+  if (!exercise) {
+    notFound();
+  }
 
-  const onSubmitEdit = async (values: z.infer<typeof exerciseFormSchema>) => {
-    try {
-      const response = await axios.patch(
-        `/api/exercises/${exercise.id}`,
-        values
-      );
-      router.push(`/exercises`);
-      router.refresh()
-      toast.success("Exercise edited");
-    } catch (error) {
-      toast.error("Something went wrong");
-    }
-  };
+  const isOwner = exercise.userId === userId;
 
   return (
-    <div className="w-2/3 mx-auto flex flex-col items-center justify-center md:mt-20">
-      <h1 className="text-2xl">Exercise editing</h1>
-      <ExerciseForm onSubmit={onSubmitEdit} exercise={exercise} />
+    <div className="w-full p-5">
+      <div className="flex">
+        <h1 className="text-3xl font-semibold mb-4 text-center">
+          {exercise.title}
+        </h1>
+        {isOwner && (
+          <Link href={`/exercises/${exercise.id}/edit`}>
+            <Button variant="outline" className="ml-4">
+              <Pencil className="w-4 h-4 mr-2" /> Edit
+            </Button>
+          </Link>
+        )}
+      </div>
+      <p className="text-gray-700 mb-4 px-2">{exercise.description}</p>
+      <div className="flex flex-col justify-start bg-slate-200 rounded shadow-inner py-2 px-4 w-fit">
+        {exercise.duration && <p className="text-gray-700 mb-4 px-2">Duration: {exercise.duration}</p>}
+        {exercise.restTime && <p className="text-gray-700 mb-4 px-2">Rest Time: {exercise.restTime}</p>}
+        {exercise.weight && <p className="text-gray-700 mb-4 px-2">Weight: {exercise.weight}kg</p>}
+        {exercise.approachesNumber && <p className="text-gray-700 mb-4 px-2">Approaches: {exercise.approachesNumber} times</p>}
+        {exercise.repetitionNumber && <p className="text-gray-700 mb-4 px-2">Repetitions: {exercise.repetitionNumber} times</p>}
+      </div>
     </div>
   );
 };

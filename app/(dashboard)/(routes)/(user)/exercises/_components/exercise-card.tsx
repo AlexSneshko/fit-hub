@@ -27,12 +27,16 @@ export const ExerciseCard = ({ data }: ExerciseCardProps) => {
         {restTime && (
           <p className="text-gray-700 mb-2">Rest Time: {restTime}</p>
         )}
-        {weight && <p className="text-gray-700 mb-2">Weight: {weight}</p>}
+        {weight && <p className="text-gray-700 mb-2">Weight: {weight}kg</p>}
         {approachesNumber && (
-          <p className="text-gray-700 mb-2">Approaches: {approachesNumber}</p>
+          <p className="text-gray-700 mb-2">
+            Approaches: {approachesNumber} times
+          </p>
         )}
         {repetitionNumber && (
-          <p className="text-gray-700 mb-2">Repetitions: {repetitionNumber}</p>
+          <p className="text-gray-700 mb-2">
+            Repetitions: {repetitionNumber} times
+          </p>
         )}
       </div>
     </Link>
