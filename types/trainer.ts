@@ -38,3 +38,16 @@ export type TrainingWithSharedTrainingWithUser = Prisma.TrainingGetPayload<{
     };
   };
 }>;
+
+export type TrainerWithUser = Prisma.TrainerGetPayload<{
+  include: {
+    user: true;
+  };
+}>;
+
+export type TrainerWithUserWithGymTrainerRelationship = Prisma.TrainerGetPayload<{
+  include: {
+    user: true;
+    gymsRelationShips: true;
+  },
+}>;

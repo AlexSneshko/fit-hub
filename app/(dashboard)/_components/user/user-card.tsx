@@ -12,12 +12,12 @@ import { Avatar } from "../avatar";
 
 interface UserCardProps {
   data: User;
-  isUserSubscribed: boolean;
+  isUserSubscribed?: boolean;
 }
 
 export const UserCard = ({ data, isUserSubscribed }: UserCardProps) => {
   const { userId } = useAuth();
-  const [isSubscribed, setIsSubscribed] = useState<boolean>(isUserSubscribed);
+  const [isSubscribed, setIsSubscribed] = useState<boolean | undefined>(isUserSubscribed);
 
   const onSubscribe = async (e: MouseEvent<HTMLButtonElement>) => {
     try {
@@ -66,7 +66,7 @@ export const UserCard = ({ data, isUserSubscribed }: UserCardProps) => {
           {data.isTrainer && (
             <p className="text-sky-700 font-semibold">Trainer</p>
           )}
-          {userId &&
+          {isUserSubscribed !== undefined &&
             userId !== data.id &&
             (!isSubscribed ? (
               <Button

@@ -1,8 +1,8 @@
 import { auth } from "@clerk/nextjs";
 
 import { UserCard } from "./user-card";
-import { UserWithSubsribers } from "@/types/user-author";
 import { isUserSubcribed } from "@/lib/utils";
+import { UserWithSubsribers } from "@/types/user";
 
 interface UserListProps {
   data: UserWithSubsribers[];

@@ -41,9 +41,3 @@ export type UserAuthorWithTrainings = Prisma.UserGetPayload<{
     };
   };
 }>;
-
-export type UserWithSubsribers = Prisma.UserGetPayload<{
-  include: {
-    subscribers: true;
-  };
-}>;

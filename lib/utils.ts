@@ -5,8 +5,9 @@ import locale from 'date-fns/locale/en-US'
 import { Gym, User } from "@prisma/client";
 
 import { AuthorWithProfileInfo } from "@/types/author";
-import { UserAuthorWithProfileInfo, UserWithSubsribers } from "@/types/user-author";
+import { UserAuthorWithProfileInfo } from "@/types/user-author";
 import { GymAuthorWithProfileInfo, GymWithSubscribers } from "@/types/gym-author";
+import { UserWithSubsribers } from "@/types/user";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

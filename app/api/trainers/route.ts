@@ -55,3 +55,24 @@ export async function POST(req: Request) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
+export async function GET(req: Request) {
+  try {
+    const { userId } = auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const trainers = await db.trainer.findMany({
+      include: {
+        user: true,
+      }
+    });
+
+    return NextResponse.json(trainers);
+  } catch (error) {
+    console.log("[TRAINER]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}

@@ -12,6 +12,7 @@ import { PromotionList } from "@/app/(dashboard)/_components/promotion/promotion
 import { MembershipList } from "@/app/(dashboard)/_components/membership/membership-list";
 import { EquipmentList } from "@/app/(dashboard)/_components/equipment/equipment-list";
 import { StaffList } from "@/app/(dashboard)/_components/staff/staff-list";
+import { TrainerList } from "../../../../_components/client/trainer-list";
 
 const GymPage = async ({ params }: { params: { username: string } }) => {
   const { userId } = auth();
@@ -34,7 +35,16 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
           createdAt: "desc",
         },
       },
-      trainers: true,
+      trainersRelationShips: {
+        include: {
+          trainer: {
+            include: {
+              user: true,
+              gymsRelationShips: true
+            },
+          },
+        },
+      },
       gymMemberships: true,
       equipment: true,
       promotions: {
@@ -59,8 +69,11 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
     notFound();
   }
 
-  // change to username comparing
   const isOwner = userId === gymWithInfo.id;
+
+  const gymTrainers = gymWithInfo.trainersRelationShips.map(({ trainer }) => {
+    return trainer;
+  });
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -110,7 +123,9 @@ const GymPage = async ({ params }: { params: { username: string } }) => {
         <TabsContent value="posts">
           <PostList data={gymWithInfo.posts} />
         </TabsContent>
-        <TabsContent value="trainers">Trainers</TabsContent>
+        <TabsContent value="trainers">
+          <TrainerList data={gymTrainers} isOwner={false} />
+        </TabsContent>
         <TabsContent value="promotions">
           <PromotionList data={gymWithInfo} />
         </TabsContent>

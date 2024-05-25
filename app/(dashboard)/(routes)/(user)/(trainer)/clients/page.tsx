@@ -41,7 +41,6 @@ const ClientsPage = async () => {
     <div>
       <div className="flex items-center justify-between px-4 mb-6">
         <h1 className="text-2xl font-semibold">Clients</h1>
-
         <AddClientDialog trainerId={trainerWithClients.userId} />
       </div>
       <ClientList data={trainerWithClients} />

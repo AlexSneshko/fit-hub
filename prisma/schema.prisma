@@ -26,13 +26,11 @@ model User {
   trainings       Training[]
   sharedTrainings SharedTraining[]
   posts           Post[]
-  comments        Comment[]
   client          GymClient?
   trainer         Trainer?
   trainers        TrainerClientRelationship[]
   subscriptions   Subscription[]
   subscribers     Subscription[]              @relation("UserSubscribers")
-  likedPosts      Like[]
   staff           Staff?
 
   createdAt DateTime  @default(now())
@@ -54,38 +52,10 @@ model Exercise {
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
-  exerciseProgresses ExerciseProgress[]
-  trainings          ExerciseInTraining[]
+  trainings ExerciseInTraining[]
 
   @@index([userId])
   @@index([categoryId])
-}
-
-model ExerciseProgress {
-  id         String @id @default(uuid())
-  exerciseId String
-
-  exercise Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
-
-  exerciseRepetitionDetails ExerciseRepetitionDetails[]
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
-
-  @@index([exerciseId])
-}
-
-model ExerciseRepetitionDetails {
-  id                 String  @id @default(uuid())
-  approachesNumber   Int
-  repetitoinNumber   Int
-  weight             Float?
-  duration           String?
-  exerciseProgressId String
-
-  exerciseProgress ExerciseProgress @relation(fields: [exerciseProgressId], references: [id])
-
-  @@index([exerciseProgressId])
 }
 
 model Training {
@@ -152,9 +122,6 @@ model Post {
   authorUser User? @relation(fields: [authorUserId], references: [id], onDelete: Cascade)
   authorGym  Gym?  @relation(fields: [authorGymId], references: [id], onDelete: Cascade)
 
-  likes    Like[]
-  comments Comment[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -162,36 +129,7 @@ model Post {
   @@index([authorGymId])
 }
 
-model Like {
-  id     String @id @default(uuid())
-  userId String
-  postId String
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-
-  @@index([postId])
-  @@index([userId])
-}
-
-model Comment {
-  id          String @id @default(uuid())
-  authorId    String
-  postId      String
-  content     String
-  likesAmount Int    @default(0)
-
-  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-
-  @@index([authorId])
-  @@index([postId])
-}
-
 model GymClient {
-  id     String @id @default(uuid())
   userId String @unique
   gymId  String
 
@@ -200,23 +138,36 @@ model GymClient {
 
   createdAt DateTime @default(now())
 
+  @@id([userId, gymId])
   @@index([userId])
   @@index([gymId])
 }
 
 model Trainer {
-  userId String  @id
-  gymId  String?
+  userId String @id
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  gym  Gym? @relation(fields: [gymId], references: [id], onDelete: Cascade)
 
-  clients         TrainerClientRelationship[]
-  sharedTrainings SharedTraining[]
+  clients           TrainerClientRelationship[]
+  sharedTrainings   SharedTraining[]
+  gymsRelationShips GymTrainerRelationship[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GymTrainerRelationship {
+  trainerId String
+  gymId     String
+  role      String
+
+  gym     Gym     @relation(fields: [gymId], references: [id], onDelete: Cascade)
+  trainer Trainer @relation(fields: [trainerId], references: [userId], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@id([trainerId, gymId])
   @@index([gymId])
 }
 
@@ -240,15 +191,15 @@ model Gym {
   location String
   imageUrl String?
 
-  trainers       Trainer[]
-  clents         GymClient[]
-  subscribers    Subscription[]
-  gymOpenTime    GymOpenTime?
-  posts          Post[]
-  gymMemberships GymMembership[]
-  promotions     Promotion[]
-  equipment      Equipment[]
-  staff          Staff[]
+  trainersRelationShips GymTrainerRelationship[]
+  clents                GymClient[]
+  subscribers           Subscription[]
+  gymOpenTime           GymOpenTime?
+  posts                 Post[]
+  gymMemberships        GymMembership[]
+  promotions            Promotion[]
+  equipment             Equipment[]
+  staff                 Staff[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

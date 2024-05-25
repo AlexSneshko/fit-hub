@@ -50,26 +50,6 @@ export const staffFormSchema = z.object({
   userId: z.string().optional(),
 });
 
-// model Staff {
-//     id          String   @id @default(uuid())
-//     fullName    String
-//     role        String
-//     imageUrl    String?
-//     description String?  @db.Text
-//     firstDate   DateTime
-//     gymId       String
-//     userId      String?  @unique
-
-//     gym  Gym   @relation(fields: [gymId], references: [id], onDelete: Cascade)
-//     user User? @relation(fields: [userId], references: [id])
-
-//     createdAt DateTime @default(now())
-//     updatedAt DateTime @updatedAt
-
-//     @@index([gymId])
-//     @@index([userId])
-//   }
-
 interface StaffFormProps {
   onSubmit: (data: z.infer<typeof staffFormSchema>) => void;
   staff?: Staff;
@@ -86,6 +66,7 @@ export const StaffForm = ({ onSubmit, staff }: StaffFormProps) => {
     resolver: zodResolver(staffFormSchema),
     defaultValues: {
       fullName: "",
+      userId: staff?.userId || undefined,
     },
   });
 
