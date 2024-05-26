@@ -10,6 +10,7 @@ import {
   Layout,
   List,
   Search,
+  Settings,
   Share2,
   User,
   UsersRound,
@@ -37,6 +38,11 @@ const userRoutes = [
     icon: Dumbbell,
     label: "Exercises",
     href: "/exercises",
+  },
+  {
+    icon: Settings,
+    label: "Settings",
+    href: "/settings",
   }
 ];
 

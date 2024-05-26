@@ -9,6 +9,7 @@ export default authMiddleware({
     "/create",
     "/gym/create",
     "/api/uploadthing",
+    "/api/webhook"
   ],
   async afterAuth(auth, req) {
     const fitLine = new URL("/fitline", req.url);

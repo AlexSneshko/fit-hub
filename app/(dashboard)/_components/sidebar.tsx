@@ -6,13 +6,21 @@ import Logo from "./logo";
 import { Button } from "@/components/ui/button";
 import { SidebarRoutes } from "./sidebar-routes";
 import { db } from "@/lib/db";
+import { TrainerSubsDialog } from "./trainer-subs-diaolg";
 
 export const Sidebar = async () => {
   const { userId } = auth();
 
-  // TODO: Add Registration
   if (!userId) {
-    return <SignInButton />;
+    return (
+      <div className="mt-2 mx-auto">
+        <SignInButton>
+          <Button size="lg" variant="link" className="text-slate-500">
+            Sign in
+          </Button>
+        </SignInButton>
+      </div>
+    )
   }
 
   let username: string | undefined;
@@ -72,9 +80,10 @@ export const Sidebar = async () => {
               isGym={isGym}
             />
             {!isTrainer && !isGym && (
-              <Link href={"/trainer"}>
-                <Button variant="outline">Upgrade to Trainer</Button>
-              </Link>
+              // <Link href={"/trainer"}>
+              //   <Button variant="outline">Upgrade to Trainer</Button>
+              // </Link>
+              <TrainerSubsDialog />
             )}
           </div>
           <div className="flex items-center mt-auto gap-x-2 p-5 pb-8">

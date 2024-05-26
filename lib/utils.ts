@@ -13,6 +13,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function absoluteUrl(path: string) {
+  return `${process.env.NEXT_PUBLIC_APP_URL}${path}`
+} 
+
 export function isAuthorUser(author: AuthorWithProfileInfo): author is UserAuthorWithProfileInfo {
   return (author as UserAuthorWithProfileInfo).surname !== null;
 }

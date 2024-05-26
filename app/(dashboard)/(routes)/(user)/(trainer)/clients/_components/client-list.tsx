@@ -18,6 +18,10 @@ interface ClientListProps {
 export const ClientList = ({ data }: ClientListProps) => {
   const router = useRouter();
 
+  if (data.clients.length === 0) {
+    return <div className="text-center">No clients</div>;
+  }
+
   const onDeleteClient = (clientId: string) => async () => {
     try {
       const response = await axios.delete(
